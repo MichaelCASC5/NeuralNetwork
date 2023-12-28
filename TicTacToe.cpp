@@ -51,7 +51,12 @@ void TicTacToe::humanPlayerTurn(){
     // sets the chosen space to 0, marking that it is not available
     available_spaces_[user_input] = 0;
     // marks corresponding board space with X
-    board_[user_input] = X;
+    if (is_player_one_turn){
+        board_[user_input] = X;
+    }
+    else{
+        board_[user_input] = O;
+    }
 }
 
 /**
@@ -62,17 +67,17 @@ void TicTacToe::computerPlayerTurn(){
 }
 
 /**
- * takes cell values of board and displays, empty cells represented by #
- * Example: [#][O][#] 
- *          [#][#][X]
- *          [X][#][#]
+ * @post: prints a tictactoe board using cell values from board_
+ * Example: [ ][O][ ] 
+ *          [ ][ ][X]
+ *          [X][ ][ ]
 */
 void TicTacToe::displayBoard(){
     // angus
 }
 
 /**
- * if player one, changes to player two and vice versa
+ * @post: if is_player_one_turn true, changes to false and vice versa
 */
 void TicTacToe::togglePlayer(){
     // angus
@@ -81,19 +86,24 @@ void TicTacToe::togglePlayer(){
 /**
  * checks if there is three in a row or no more spaces left
  * @return: true if there is a winner or draw, false if not
+ * @post: if there is a winner, print who winner is
 */
 bool TicTacToe::gameOver(){
 
 }
+
 /**
- * a game with two humans
+ * @post: sets up a game with two humans
 */
 void TicTacToe::twoPlayerGame(){
-
+    // while(!gameOver){
+    //     humanPlayerTurn();
+    //     togglePlayer();
+    // }
 }
 
 /**
- * a game with a human and computer
+ * @post: sets up a game with a human and dumb computer
 */
 void TicTacToe::onePlayerGame(){
 
