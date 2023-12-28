@@ -7,16 +7,16 @@
 
 #include <iostream>
 
-enum cell{empty, X, O};
+enum CellValue{empty, X, O};
 
 class TicTacToe{
 private:
     // a board has 9 cells, each cell can have value of empty, X, or O
-    cell board_[9]; 
+    CellValue board_[9]; 
     // an array of cells that are empty
-    cell available_spaces_[9];
+    int available_spaces_[9];
     // bool representing if player one's turn
-    bool is_player_one_;
+    bool is_player_one_turn;
 public:
     /**
      * Default constructor makes a game of TicTacToe
@@ -27,7 +27,7 @@ public:
      * a human chooses an available space and inputs X, player can only be X. That space then becomes unavailable
     */
     void humanPlayerTurn();
-    
+
     /**
      * a random space is chosen is chosen and inputs O
     */
@@ -42,6 +42,12 @@ public:
      * if player one, changes to player two and vice versa
     */
     void togglePlayer(); 
+
+    /**
+     * checks if there is three in a row or no more spaces left
+     * @return: true if there is a winner or draw, false if not
+    */
+    bool gameOver();
 
     /**
      * a game with two humans
