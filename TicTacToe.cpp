@@ -11,12 +11,10 @@
  * Default value of is_player_one_turn is true
 */
 TicTacToe::TicTacToe(){
-    for (int i = 0; i < 9; i++)
-    {
+    for (int i = 0; i < 9; i++){
         board_[i] = empty; // all cell values are empty
     }
-    for (int i = 0; i < 9; i++)
-    {
+    for (int i = 0; i < 9; i++){
         available_spaces_[i] = 1; // all spaces are available
     }
     is_player_one_turn = true; // starts with player one's turn
@@ -31,8 +29,7 @@ void TicTacToe::humanPlayerTurn(){
         // if value is 0, prints an empty space
         if(available_spaces_[i] == 0){
             std::cout << "[ ]";
-        }
-        else{
+        }else{
             std::cout << "[" << i << "]";
         }
         if (i == 2 || i == 5 || i == 8){
@@ -53,8 +50,7 @@ void TicTacToe::humanPlayerTurn(){
     // marks corresponding board space with X
     if (is_player_one_turn){
         board_[user_input] = X;
-    }
-    else{
+    }else{
         board_[user_input] = O;
     }
 }
