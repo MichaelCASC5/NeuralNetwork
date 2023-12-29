@@ -32,9 +32,9 @@ TicTacToe::TicTacToe(){
 */
 void TicTacToe::humanPlayerTurn(){
     // prints a board with available spaces, blank if not available
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++){
         // if value is 0, prints an empty space
-        if( available_spaces_[i] == 0) {
+        if(available_spaces_[i] == 0){
             std::cout << "[ ]";
 <<<<<<< HEAD
         }else{
@@ -43,7 +43,7 @@ void TicTacToe::humanPlayerTurn(){
 >>>>>>> 22aa5ce (Node header)
             std::cout << "[" << i << "]";
         }
-        if (i == 2 || i == 5 || i == 8) {
+        if (i == 2 || i == 5 || i == 8){
             std::cout << std::endl;
         }
     }
@@ -61,7 +61,8 @@ void TicTacToe::humanPlayerTurn(){
     // marks corresponding board space with X
     if (is_player_one_turn){
         board_[user_input] = X;
-    }else{
+    }
+    else{
         board_[user_input] = O;
     }
 }
