@@ -60,6 +60,17 @@ void TicTacToe::humanPlayerTurn(){
  * a random space is chosen is chosen and inputs O
 */
 void TicTacToe::computerPlayerTurn(){
+    srand(time(NULL));
+    bool notset; 
+    while(notset){
+        int x = rand()%9;
+        if(board_[x]!= 0){
+            board_[x] = O;
+        }
+        else {
+            continue;
+        }
+    }
 
 }
 
@@ -70,7 +81,23 @@ void TicTacToe::computerPlayerTurn(){
  *          [X][ ][ ]
 */
 void TicTacToe::displayBoard(){
+   
     // angus
+    for(int i = 0; i< 9; i ++ ){
+        if(board_[i] == 1){
+            std :: cout << "[" << "x";
+        }
+        else if (board_[i] == 2)
+        {   
+            std :: cout  << "[" << "o"<<"]";
+        }
+        else{
+            std :: cout<<"[ ]";
+        }
+        if(i == 2 || i == 5|| i == 8){
+            std :: cout<<std::endl;
+        }
+    }
 }
 
 /**
@@ -78,7 +105,8 @@ void TicTacToe::displayBoard(){
 */
 void TicTacToe::togglePlayer(){
     // angus
-}
+    is_player_one_turn = true;
+}  
 
 /**
  * checks if there is three in a row or no more spaces left
@@ -86,13 +114,44 @@ void TicTacToe::togglePlayer(){
  * @post: if there is a winner, print who winner is
 */
 bool TicTacToe::gameOver(){
-
+    if(board_[0] == board_[1]== board_[2]){
+        return true;
+    }
+    if (board_[0] == board_[3] == board_[6])
+    {
+        return true;
+    }
+    if (board_[0] == board_[4] == board_[8])
+    {
+        return true;
+    }
+    if (board_[2] == board_[5] == board_[8])
+    {
+        return true;
+    }
+    if (board_[6] == board_[7] == board_[8])
+    {
+        return true;
+    }
+    if (board_[3] == board_[4] == board_[5])
+    {
+        return true;
+    }
+    if (board_[2] == board_[4] == board_[6])
+    {
+        return true;
+    }
+    if (board_[1] == board_[4] == board_[7])
+    {
+        return true;
+    }
+    return false;
 }
 
 /**
  * @post: sets up a game with two humans
 */
-void TicTacToe::twoPlayerGame(){
+bool TicTacToe::twoPlayerGame(){
     // while(!gameOver){
     //     humanPlayerTurn();
     //     togglePlayer();
@@ -102,6 +161,13 @@ void TicTacToe::twoPlayerGame(){
 /**
  * @post: sets up a game with a human and dumb computer
 */
-void TicTacToe::onePlayerGame(){
+bool TicTacToe::onePlayerGame(){
 
+
+}
+
+int main (){
+
+    TicTacToe x; 
+    x.displayBoard();
 }

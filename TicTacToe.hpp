@@ -52,12 +52,13 @@ public:
     /**
      * a game with two humans
     */
-    void twoPlayerGame(); 
+    bool twoPlayerGame(); 
 
     /**
      * a game with a human and computer
     */
-    void onePlayerGame();
+    bool onePlayerGame();
 
 };
+
 #endif
