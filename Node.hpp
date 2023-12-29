@@ -17,19 +17,22 @@ public:
     //Constructors
     Node();
     Node(double value, double bias, std::vector<double> edges);
-    Node(double value, double bias, int edgeLength);
+
+    //Connection Constructor
+    Node(int edgeNum);
 
     //Accessor
     double getValue() const;
     double getBias() const;
-    std::vector<double> getEdges() const;//I forgot the correct syntax for this. Just have it return the array. I think you need to return a pointer.
+    std::vector<double> getEdges() const;
 
     //Mutator
     void setValue(double value);
     void setBias(double bias);
     void setEdge(std::vector<double> edges);
 
-    void printNode() const;//Just prints out the information in the node
+    //Print
+    void printNode() const;
 };
 
 #include "Node.cpp"

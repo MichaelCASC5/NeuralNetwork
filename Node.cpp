@@ -12,9 +12,22 @@ Node::Node(double value, double bias, std::vector<double> edges):Node() {
     edges_ = edges;
 }
 
-Node::Node(double value, double bias, int edgeNum):Node() {
-    value_ = value;
-    bias_ = bias;
+/**
+    * Connection constructor that connects the node to the rest of the network.
+    *
+    * This gives the node the amount of edges it needs to connect to the nodes in the next layer.
+    * The number of edges that it requires is given in the parameter. This constructor
+    * also randomizes all necessary values of the node, to prepare for training.
+    * This constructor is used when filling each layer with nodes during Network creation.
+    * 
+    * @param edgeNum The number of edges that are required to connect to every node of the next layer.
+*/
+Node::Node(int edgeNum){
+    //THE VALUES ARE NOT YET RANDOMIZED
+    value_ = 0;
+    bias_ = 0;
+
+    //Set edges_ to the proper amont of edges needed with their values.
     std::vector<double> edges(edgeNum, 0);
     edges_ = edges;
 }
