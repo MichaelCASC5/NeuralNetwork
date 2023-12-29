@@ -29,4 +29,6 @@ public:
     void setBias(double bias);
     void setEdge(std::vector<double> edges);
 };
+
+#include <Node.cpp>
 #endif

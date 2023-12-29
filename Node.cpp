@@ -2,8 +2,6 @@
  * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
 */
 
-#include "Node.hpp"
-
 Node::Node():value_(0), bias_(0){
     edges_ = {};
 }
