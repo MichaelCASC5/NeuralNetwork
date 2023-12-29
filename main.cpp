@@ -1,7 +1,8 @@
 #include <iostream>
+#include "Network.hpp"
 
 int main(){
-    Node node;
-    
+    Network network;
+
     return 0;
 }
