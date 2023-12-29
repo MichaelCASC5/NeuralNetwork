@@ -98,6 +98,7 @@ void TicTacToe::displayBoard() const{
             std::cout << std::endl;
         }
     }
+    std::cout<< std::endl;
 }
 
 /**
@@ -111,7 +112,13 @@ void TicTacToe::togglePlayer(){
  * @return: true if no spaces left, every element in available_space_ is 0
 */
 bool TicTacToe::checkNoSpaces() const{
-    return false;
+    for(int i = 0; i < 9; i ++){
+        if(available_spaces_[i] != 0){
+           return false;
+        }
+    }
+    return true;
+    
 }
 
 /**
@@ -119,35 +126,43 @@ bool TicTacToe::checkNoSpaces() const{
 */
 bool TicTacToe::checkThreeInRow() const{
     // checks if three non empty cells in a row
-    if((board_[0] == board_[1]== board_[2]) && available_spaces_[0] != 0) {
+    if ((board_[0] == board_[1] && board_[1] == board_[2]) && available_spaces_[0] == 0)
+    {
         std::cout << 1;
         return true; // first row
     }
-    if ((board_[3] == board_[4] == board_[5]) && available_spaces_[3] != 0) {
+    if ((board_[3] == board_[4] && board_[4] == board_[5]) && available_spaces_[3] == 0)
+    {
         std::cout << 2;
         return true; // second row
     }
-    if ((board_[6] == board_[7] == board_[8]) && available_spaces_[6] != 0) {
+    if ((board_[6] == board_[7] && board_[7] == board_[8]) && available_spaces_[6] == 0)
+    {
         std::cout << 3;
         return true; // third row
     }
-    if ((board_[0] == board_[3] == board_[6]) && available_spaces_[0] != 0) {
+    if ((board_[0] == board_[3] && board_[3] == board_[6]) && available_spaces_[0] == 0)
+    {
         std::cout << 4;
         return true; // first column
     }
-    if ((board_[1] == board_[4] == board_[7]) && available_spaces_[1] != 0) {
+    if ((board_[1] == board_[4] && board_[4] == board_[7]) && available_spaces_[1] == 0)
+    {
         std::cout << 5;
         return true; // second column
     }
-    if ((board_[2] == board_[5] == board_[8]) && available_spaces_[2] != 0) {
+    if ((board_[2] == board_[5] && board_[5] == board_[8]) && available_spaces_[2] == 0)
+    {
         std::cout << 6;
         return true; // third column
     }
-    if ((board_[0] == board_[4] == board_[8]) && available_spaces_[0] != 0) {
+    if ((board_[0] == board_[4] && board_[4] == board_[8]) && available_spaces_[0] == 0)
+    {
         std::cout << 7;
         return true; // l to r diagonal
     }
-    if ((board_[2] == board_[4] == board_[6]) && available_spaces_[2] != 0) {
+    if ((board_[2] == board_[4] && board_[4] == board_[6]) && available_spaces_[2] == 0)
+    {
         std::cout << 8;
         return true; // r to l diagonal
     }
@@ -160,7 +175,7 @@ bool TicTacToe::checkThreeInRow() const{
  * @post: if there is a winner, print who winner is
 */
 bool TicTacToe::gameOver() const{
-    return checkNoSpaces() || checkThreeInRow();
+    return checkThreeInRow() || checkNoSpaces();
 }
 
 /**
@@ -168,15 +183,25 @@ bool TicTacToe::gameOver() const{
 */
 EndResult TicTacToe::twoPlayerGame(){
     while(!gameOver()){
+
         displayBoard();
         humanPlayerTurn();
-        if (is_player_one_turn && checkThreeInRow()){
-            return XWins;
+
+        if (checkThreeInRow()){
+            if (is_player_one_turn)
+            {
+                displayBoard();
+                return XWins;
+            }
+            else
+            {
+                displayBoard();
+                return OWins;
+            }
         }
-        else if (!is_player_one_turn && checkThreeInRow()){
-            return OWins;
-        }
-        else if (checkNoSpaces()){
+        if (checkNoSpaces())
+        {
+            displayBoard();
             return Draw;
         }
         togglePlayer();
@@ -190,3 +215,22 @@ EndResult TicTacToe::twoPlayerGame(){
 bool TicTacToe::onePlayerGame(){
     return true;
 }
+/**
+int main(){
+    TicTacToe x;
+    EndResult y = x.twoPlayerGame();
+    switch (y)
+    {
+    case XWins:
+        std :: cout << "X won :)";
+        break;
+    case OWins:
+        std ::cout << "y won :)";
+        break;
+    case Draw:
+        std ::cout << "womp womp :)";
+        break;
+    }
+
+}
+*/
