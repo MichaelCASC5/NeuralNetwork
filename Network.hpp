@@ -7,17 +7,18 @@
 
 #include <iostream>
 #include <vector>
+#include <initializer_list>
 #include "Node.hpp"
 
 class Network{
     private:
-        int * layer_;
+        std::vector<std::vector<int>> layers_;
     public:
         //Constructors
-        Network(int n);
+        Network(std::initializer_list<int> arr);
 
         //Accessor
-        int * getLayer();
+        std::vector<std::vector<int>> getLayers();
 };
 
 #include "Network.cpp"

@@ -30,5 +30,5 @@ public:
     void setEdge(std::vector<double> edges);
 };
 
-#include <Node.cpp>
+#include "Node.cpp"
 #endif
