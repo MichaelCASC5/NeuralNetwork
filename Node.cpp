@@ -2,10 +2,27 @@
  * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
 */
 
+/**
+    * CONSTRUCTORS
+*/
+/**
+    * Default Constructor
+    *
+    * Sets all values to 0 and edges_ to empty
+*/
 Node::Node():value_(0), bias_(0) {
     edges_ = {};
 }
 
+/**
+    * Parameterized Constructor
+    *
+    * Sets all values to input and edges_ to a vector
+    *
+    * @param value Sets value_
+    * @param bias Sets bias_
+    * @param edges Is a std::vector<double> and sets edges_
+*/
 Node::Node(double value, double bias, std::vector<double> edges):Node() {
     value_ = value;
     bias_ = bias;
@@ -32,31 +49,62 @@ Node::Node(int edgeNum){
     edges_ = edges;
 }
 
+/**
+    * ACCESSOR METHODS
+*/
+/**
+    * Returns value_
+    * @return value_
+*/
 double Node::getValue() const {
     return value_;
 }
-
+/**
+    * Returns bias_
+    * @return bias_
+*/
 double Node::getBias() const {
     return bias_;
 }
-
+/**
+    * Returns edges_
+    * @return std::vector<double> edges_
+*/
 std::vector<double> Node::getEdges() const { 
     return edges_;
 }
 
-
-//Mutator
+/**
+    * MUTATOR METHODS
+*/
+/**
+    * Sets value_
+    * @param value Sets value_
+*/
 void Node::setValue(double value) {
     value_ = value;
 }
+/**
+    * Sets bias_
+    * @param value Sets bias_
+*/
 void Node::setBias(double bias) {
     bias_ = bias;
 }
+/**
+    * Sets std::vector<double> edges_
+    * @param value Sets std::vector<double> edges_
+*/
 void Node::setEdge(std::vector<double> edges) {
     edges_ = edges;
 }
 
-//Print
+/**
+    EXTRA FUNCTIONS
+*/
+/**
+    * Prints the information in the node to console.
+*/
 void Node::printNode() const {
     std::cout << "Value: "  << value_ << "\nBias: " << bias_ << "\nEdges: ";
     for (int i = 0; i < edges_.size(); i++){

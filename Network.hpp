@@ -18,7 +18,7 @@ class Network{
         Network(std::initializer_list<int> arr);
 
         //Accessor
-        std::vector<std::vector<Node>> getLayers();
+        std::vector<std::vector<Node>>& getLayers();
 };
 
 #include "Network.cpp"

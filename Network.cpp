@@ -3,10 +3,10 @@
 */
 
 /**
-    * Sets up the neural network
+    * Connects the neural network
     *
-    * The user inputs an array, which is read an initializer_list. e.g.({1,2,3})
-    * This array is then transversed, and for each element a new vector of nodes of
+    * The input of the array is read as an initializer_list. e.g.({1,2,3}) or vector, etc.
+    * This array is then traversed, and for each element a new vector of nodes of
     * that length is created. Each new vector of nodes is then pushed to the
     * layers_ 2D vector.
     * As each node is pushed to a layer, it builds as many edges as there are nodes
@@ -34,10 +34,8 @@ Network::Network(std::initializer_list<int> arr) {
 }
 
 /**
-    * Returns layers
-    *
-    * @return The layers_ 2D vector.
+    * @return The address to layers_ 2D vector.
 */
-std::vector<std::vector<Node>> Network::getLayers() {
+std::vector<std::vector<Node>>& Network::getLayers() {
     return layers_;
 }
