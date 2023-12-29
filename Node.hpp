@@ -12,18 +12,21 @@ class Node{
 private:
     double value_;
     double bias_;
-
-    double edges_[];
+    std::vector<double> edges_;
 public:
+    //Constructors
+    Node();
+    Node(double value, double bias, std::vector<double> edges);
+
     //Accessor
-    double getValue();
-    double getBias();
-    double getEdges();//I forgot the correct syntax for this. Just have it return the array. I think you need to return a pointer.
-    str::string printNode();//Just prints out the information in the node
+    double getValue() const;
+    double getBias() const;
+    std::vector<double> getEdges() const;//I forgot the correct syntax for this. Just have it return the array. I think you need to return a pointer.
+    void printNode() const;//Just prints out the information in the node
 
     //Mutator
-    void setValue();
-    void setBias();
-    void setEdge(int arr[]);
+    void setValue(double value);
+    void setBias(double bias);
+    void setEdge(std::vector<double> edges);
 };
 #endif
