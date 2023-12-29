@@ -2,7 +2,7 @@
 #include "Network.hpp"
 
 int main(){
-    Network network;
+    Network network(10);
 
     return 0;
 }

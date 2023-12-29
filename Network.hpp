@@ -6,16 +6,19 @@
 #define NETWORK_HPP
 
 #include <iostream>
+#include <vector>
 #include "Node.hpp"
 
 class Network{
     private:
-        Node layer_[1];
+        int * layer_;
     public:
-        //Default Constructor
-        Network();
+        //Constructors
+        Network(int n);
+
+        //Accessor
+        int * getLayer();
 };
 
 #include "Network.cpp"
-
 #endif
