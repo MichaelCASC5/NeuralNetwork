@@ -19,7 +19,7 @@ public:
     double getValue();
     double getBias();
     double getEdges();//I forgot the correct syntax for this. Just have it return the array. I think you need to return a pointer.
-    str::string printNode();//Just prints out the information in the node
+    std::string printNode();//Just prints out the information in the node
 
     //Mutator
     void setValue();
