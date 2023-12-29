@@ -19,13 +19,22 @@ Network::Network(std::initializer_list<int> arr) {
     int arrSize = arr.size();
 
     //Convert intializer_list into an array for ease of use.
+    //  The ability to see one element ahead is necessary.
     int* input = new int[arrSize];
     std::copy(arr.begin(), arr.end(), input);
 
     //For each element create vector of that length and push that vector to layers_
     for (int i = 0; i < arrSize; i++) {
-        //For each node added to a layer call the connection constructor that will connect the node
-        std::vector<Node> nodes(input[i], input[i+1]);
+        //For each node added to a layer the connection constructor will connect the node
+        std::vector<Node> nodes;
+
+        //j < input[i]  Push as many nodes into the layer as was specified in the input
+        for (int j = 0; j < input[i]; j++) {
+            //Node(input[i+1])  This is a call to the connection constructor.
+            //  Give the node as many edges as there are nodes in the next layer.
+            nodes.push_back(Node(input[i+1]));
+        }
+
         layers_.push_back(nodes);
     }
 

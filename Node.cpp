@@ -40,12 +40,22 @@ Node::Node(double value, double bias, std::vector<double> edges):Node() {
     * @param edgeNum The number of edges that are required to connect to every node of the next layer.
 */
 Node::Node(int edgeNum){
-    //THE VALUES ARE NOT YET RANDOMIZED
-    value_ = 0;
-    bias_ = 0;
+    //Generating random device to seed the RNG
+    std::random_device rd;
+    std::mt19937 gen(rd());//Mersenne Twister
+    std::uniform_real_distribution<double> dis(-1.0, 1.0);//range [-1,1)
+    
+    //Setting values to random doubles
+    value_ = dis(gen);
+    bias_ = dis(gen);
 
-    //Set edges_ to the proper amont of edges needed with their values.
-    std::vector<double> edges(edgeNum, 0);
+    //Populate edges with random doubles
+    std::vector<double> edges;
+    for (int i = 0; i < edgeNum; i++) {
+        edges.push_back(dis(gen));
+    }
+
+    //Set edges_ to this vector
     edges_ = edges;
 }
 

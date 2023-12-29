@@ -12,8 +12,11 @@ int main() {
 
     //Printing a single node
     Node * n = &(network.getLayers()[0][0]);
-    n->setBias(1024);
+    // n->setBias(1024);
     n->printNode();
+
+    Node * n1 = &(network.getLayers()[0][1]);
+    n1->printNode();
 
     return 0;
 }
