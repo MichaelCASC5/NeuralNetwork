@@ -12,13 +12,13 @@
 
 class Network{
     private:
-        std::vector<std::vector<int>> layers_;
+        std::vector<std::vector<Node>> layers_;
     public:
         //Constructors
         Network(std::initializer_list<int> arr);
 
         //Accessor
-        std::vector<std::vector<int>> getLayers();
+        std::vector<std::vector<Node>> getLayers();
 };
 
 #include "Network.cpp"

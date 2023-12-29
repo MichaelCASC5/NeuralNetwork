@@ -11,7 +11,9 @@ int main() {
     std::cout << network.getLayers()[2].size() << std::endl;
 
     //How to access single element
-    std::cout << network.getLayers()[0][0] << std::endl;
+    // std::cout << network.getLayers()[0][0] << std::endl;
+    Node n = network.getLayers()[0][0];
+    n.printNode();
 
     return 0;
 }
