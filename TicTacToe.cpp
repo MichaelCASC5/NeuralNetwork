@@ -81,6 +81,11 @@ void TicTacToe::computerPlayerTurn() {
  *          [X][ ][ ]
 */
 void TicTacToe::displayBoard() const {
+    if (is_player_one_turn) {
+        std::cout << "Player One (X): " << std::endl;
+    } else {
+        std::cout << "Player Two (O): " << std::endl;
+    }
     for (int i = 0; i < 9; i ++ ) {
         if (board_[i] == X) {
             std :: cout << "[X]";
@@ -166,30 +171,50 @@ bool TicTacToe::gameOver() const {
 }
 
 /**
- * @post: sets up a game with two humans
+    * Sets up a game between two human players
+    * 
+    * In a game loop, the human is prompted to enter the input.
+    * Then, the win conditions are checked, if they are not met then check
+    * if the game has drawed between the players. If the game has drawed
+    * return true. Player one wins if it is the first player to force the draw.
+    * If the win conditions are met, then the program returns true/false depending
+    * on whether player one won.
+    *
+    * @return If player one won the game.
 */
-EndResult TicTacToe::twoPlayerGame() {
-    while (!gameOver()) {
+bool TicTacToe::twoPlayerGame() {
+    bool output;
+    while (1) {
 
+        //Displays board and lets the player move
         displayBoard();
         humanPlayerTurn();
 
+        //Win conditions
         if (checkThreeInRow()) {
             if (is_player_one_turn) {
                 displayBoard();
-                return XWins;
+                output = true;
+                break;
             } else {
                 displayBoard();
-                return OWins;
+                output = false;
+                break;
             }
         }
+
+        //Draw
         if (checkNoSpaces()) {
             displayBoard();
-            return Draw;
+            output = true;
+            break;
         }
+
+        //Switch player
         togglePlayer();
     }
-    return Draw; 
+
+    return output; 
 }
 
 /**

@@ -64,7 +64,7 @@ public:
     /**
      * a game with two humans
     */
-    EndResult twoPlayerGame(); 
+    bool twoPlayerGame(); 
 
     /**
      * a game with a human and computer
