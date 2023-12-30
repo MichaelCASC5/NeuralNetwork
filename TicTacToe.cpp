@@ -10,7 +10,7 @@
  * Default values of available spaces are ints 1-9
  * Default value of is_player_one_turn is true
 */
-TicTacToe::TicTacToe(){
+TicTacToe::TicTacToe() {
     board_.clear();
     available_spaces_.clear();
     for (int i = 0; i < 9; i++) {
@@ -25,16 +25,16 @@ TicTacToe::TicTacToe(){
 /**
  * a human chooses an available space and inputs X, player can only be X. That space then becomes unavailable
 */
-void TicTacToe::humanPlayerTurn(){
+void TicTacToe::humanPlayerTurn() {
     // prints a board with available spaces, blank if not available
-    for (int i = 0; i < 9; i++){
+    for (int i = 0; i < 9; i++) {
         // if value is 0, prints an empty space
-        if(available_spaces_[i] == 0){
+        if(available_spaces_[i] == 0) {
             std::cout << "[ ]";
         } else {
             std::cout << "[" << i << "]";
         }
-        if (i == 2 || i == 5 || i == 8){
+        if (i == 2 || i == 5 || i == 8) {
             std::cout << std::endl;
         }
     }
@@ -43,17 +43,16 @@ void TicTacToe::humanPlayerTurn(){
     std::cout << "Enter an available space: ";
     std::cin >> user_input;
     // if the input is not an avaliable space, asks user to reenter
-    while (available_spaces_[user_input] != 1){
+    while (available_spaces_[user_input] != 1) {
         std::cout << "Invalid input, please reenter: ";
         std::cin >> user_input;
     }
     // sets the chosen space to 0, marking that it is not available
     available_spaces_[user_input] = 0;
     // marks corresponding board space with X
-    if (is_player_one_turn){
+    if (is_player_one_turn) {
         board_[user_input] = X;
-    }
-    else{
+    } else {
         board_[user_input] = O;
     }
 }
@@ -61,15 +60,14 @@ void TicTacToe::humanPlayerTurn(){
 /**
  * a random space is chosen is chosen and inputs O
 */
-void TicTacToe::computerPlayerTurn(){
+void TicTacToe::computerPlayerTurn() {
     srand(time(NULL));
     bool notset; 
-    while(notset){
+    while (notset) {
         int x = rand()%9;
-        if(board_[x]!= 0){
+        if (board_[x]!= 0) {
             board_[x] = O;
-        }
-        else {
+        } else {
             continue;
         }
     }
@@ -82,19 +80,16 @@ void TicTacToe::computerPlayerTurn(){
  *          [ ][ ][X]
  *          [X][ ][ ]
 */
-void TicTacToe::displayBoard() const{
-    for(int i = 0; i < 9; i ++ ){
-        if(board_[i] == X){
+void TicTacToe::displayBoard() const {
+    for (int i = 0; i < 9; i ++ ) {
+        if (board_[i] == X) {
             std :: cout << "[X]";
-        }
-        else if (board_[i] == O)
-        {   
+        } else if (board_[i] == O) {   
             std :: cout  << "[O]";
-        }
-        else{
+        } else {
             std :: cout<<"[ ]";
         }
-        if(i == 2 || i == 5|| i == 8){
+        if (i == 2 || i == 5|| i == 8) {
             std::cout << std::endl;
         }
     }
@@ -104,16 +99,16 @@ void TicTacToe::displayBoard() const{
 /**
  * @post: if is_player_one_turn true, changes to false and vice versa
 */
-void TicTacToe::togglePlayer(){
+void TicTacToe::togglePlayer() {
     is_player_one_turn = !is_player_one_turn;
 }  
 
 /**
  * @return: true if no spaces left, every element in available_space_ is 0
 */
-bool TicTacToe::checkNoSpaces() const{
-    for(int i = 0; i < 9; i ++){
-        if(available_spaces_[i] != 0){
+bool TicTacToe::checkNoSpaces() const {
+    for (int i = 0; i < 9; i ++) {
+        if( available_spaces_[i] != 0) {
            return false;
         }
     }
@@ -124,45 +119,37 @@ bool TicTacToe::checkNoSpaces() const{
 /**
  * @return: true if three cells in a row are the same non empty value
 */
-bool TicTacToe::checkThreeInRow() const{
+bool TicTacToe::checkThreeInRow() const {
     // checks if three non empty cells in a row
-    if ((board_[0] == board_[1] && board_[1] == board_[2]) && available_spaces_[0] == 0)
-    {
+    if ((board_[0] == board_[1] && board_[1] == board_[2]) && available_spaces_[0] == 0) {
         std::cout << 1;
         return true; // first row
     }
-    if ((board_[3] == board_[4] && board_[4] == board_[5]) && available_spaces_[3] == 0)
-    {
+    if ((board_[3] == board_[4] && board_[4] == board_[5]) && available_spaces_[3] == 0) {
         std::cout << 2;
         return true; // second row
     }
-    if ((board_[6] == board_[7] && board_[7] == board_[8]) && available_spaces_[6] == 0)
-    {
+    if ((board_[6] == board_[7] && board_[7] == board_[8]) && available_spaces_[6] == 0) {
         std::cout << 3;
         return true; // third row
     }
-    if ((board_[0] == board_[3] && board_[3] == board_[6]) && available_spaces_[0] == 0)
-    {
+    if ((board_[0] == board_[3] && board_[3] == board_[6]) && available_spaces_[0] == 0) {
         std::cout << 4;
         return true; // first column
     }
-    if ((board_[1] == board_[4] && board_[4] == board_[7]) && available_spaces_[1] == 0)
-    {
+    if ((board_[1] == board_[4] && board_[4] == board_[7]) && available_spaces_[1] == 0) {
         std::cout << 5;
         return true; // second column
     }
-    if ((board_[2] == board_[5] && board_[5] == board_[8]) && available_spaces_[2] == 0)
-    {
+    if ((board_[2] == board_[5] && board_[5] == board_[8]) && available_spaces_[2] == 0) {
         std::cout << 6;
         return true; // third column
     }
-    if ((board_[0] == board_[4] && board_[4] == board_[8]) && available_spaces_[0] == 0)
-    {
+    if ((board_[0] == board_[4] && board_[4] == board_[8]) && available_spaces_[0] == 0) {
         std::cout << 7;
         return true; // l to r diagonal
     }
-    if ((board_[2] == board_[4] && board_[4] == board_[6]) && available_spaces_[2] == 0)
-    {
+    if ((board_[2] == board_[4] && board_[4] == board_[6]) && available_spaces_[2] == 0) {
         std::cout << 8;
         return true; // r to l diagonal
     }
@@ -174,33 +161,29 @@ bool TicTacToe::checkThreeInRow() const{
  * @return: true if there is a winner or draw, false if not
  * @post: if there is a winner, print who winner is
 */
-bool TicTacToe::gameOver() const{
+bool TicTacToe::gameOver() const {
     return checkThreeInRow() || checkNoSpaces();
 }
 
 /**
  * @post: sets up a game with two humans
 */
-EndResult TicTacToe::twoPlayerGame(){
-    while(!gameOver()){
+EndResult TicTacToe::twoPlayerGame() {
+    while (!gameOver()) {
 
         displayBoard();
         humanPlayerTurn();
 
-        if (checkThreeInRow()){
-            if (is_player_one_turn)
-            {
+        if (checkThreeInRow()) {
+            if (is_player_one_turn) {
                 displayBoard();
                 return XWins;
-            }
-            else
-            {
+            } else {
                 displayBoard();
                 return OWins;
             }
         }
-        if (checkNoSpaces())
-        {
+        if (checkNoSpaces()) {
             displayBoard();
             return Draw;
         }
@@ -212,11 +195,11 @@ EndResult TicTacToe::twoPlayerGame(){
 /**
  * @post: sets up a game with a human and dumb computer
 */
-bool TicTacToe::onePlayerGame(){
+bool TicTacToe::onePlayerGame() {
     return true;
 }
 /**
-int main(){
+int main() {
     TicTacToe x;
     EndResult y = x.twoPlayerGame();
     switch (y)
