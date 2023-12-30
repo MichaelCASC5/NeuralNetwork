@@ -105,7 +105,7 @@ void Node::setBias(double bias) {
     * Sets std::vector<double> edges_
     * @param value Sets std::vector<double> edges_
 */
-void Node::setEdge(std::vector<double> edges) {
+void Node::setEdges(std::vector<double> edges) {
     edges_ = edges;
 }
 

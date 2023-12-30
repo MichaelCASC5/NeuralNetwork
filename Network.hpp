@@ -19,6 +19,11 @@ class Network{
 
         //Accessor
         std::vector<std::vector<Node>>& getLayers();
+
+        //Neural Network Functions
+        void setLayerValues(int layerNum, std::vector<double> input);
+        void forwardPassLayer(int layerNum);
+        std::vector<double> forwardPropagation(std::vector<double> input);
 };
 
 #include "Network.cpp"

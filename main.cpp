@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Network.hpp"
+#include "TicTacToe.hpp"
 
 int main() {
     //Initialization
@@ -9,6 +10,10 @@ int main() {
     std::cout << network.getLayers()[0].size() << std::endl;
     std::cout << network.getLayers()[1].size() << std::endl;
     std::cout << network.getLayers()[2].size() << std::endl;
+
+    //Testing propagation
+    std::vector<double> input = {5,1,2,4,3,3,9};
+    network.forwardPropagation(input);
 
     //Printing a single node
     Node * n = &(network.getLayers()[0][0]);

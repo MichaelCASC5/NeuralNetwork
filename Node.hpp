@@ -30,7 +30,7 @@ public:
     //Mutator
     void setValue(double value);
     void setBias(double bias);
-    void setEdge(std::vector<double> edges);
+    void setEdges(std::vector<double> edges);
 
     //Print
     void printNode() const;
