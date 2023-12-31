@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <initializer_list>
+#include <algorithm>
 #include "Node.hpp"
 
 class Network{
@@ -29,6 +30,11 @@ class Network{
             NEURAL NETWORK FUNCTIONS
         */
         /**
+            * minmax
+        */
+        void normalization(int layerNum, std::vector<double> input);
+        
+        /**
             * Sets the values of all the nodes of a specified layer to the elements of a vector of doubles.
         */
         void setLayerValues(int layerNum, std::vector<double> input);
@@ -49,15 +55,27 @@ class Network{
         std::vector<double> getLayerValues(int layerNum);
 
         /**
+            * Gives a softmax probability distribution of all the specified layer's nodes' values as a vector of doubles.
+        */
+        std::vector<double> softmax(int layerNum);
+
+        /**
             * Forward propagates an input through the network and returns the softmaxed values of the output layer nodes.
         */
-        //NOTICE: SOFTMAX FUNCTION HAS NOT BEEN IMPLEMENTED YET. THE VALUES ARE RETURNED AS-IS.
         std::vector<double> forwardPropagation(std::vector<double> input);
 
         /**
             * PRINT METHODS
         */
+        /**
+            * Print a specified layer
+        */
         void printLayer(int layerNum) const;
+
+        /**
+            * Print the entire network
+        */
+        void printNetwork() const;
 };
 
 #include "Network.cpp"

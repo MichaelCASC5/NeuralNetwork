@@ -2,6 +2,8 @@
  * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
 */
 
+#define e 2.7182818284590452353602874713527
+
 /**
     * CONSTRUCTORS
 */
@@ -58,6 +60,27 @@ std::vector<std::vector<Node>>& Network::getLayers() {
 /**
     * NEURAL NETWORK FUNCTIONS
 */
+/**
+    * Normalizes the values to be beteen zero and one.
+    *
+    * This is a min-max normalization.
+*/
+void Network::normalization(int layerNum, std::vector<double> input) {
+    double min = *std::min_element(input.begin(), input.end());
+    double max = *std::max_element(input.begin(), input.end());
+
+    //Print to console if the input vector size and specified layer size are different
+    if (layers_[layerNum].size() != input.size()) {
+        std::cerr << "WARNING: Input vector size does not match specified layer size." << std::endl;
+    }
+
+    //So long as i is less than the amount of nodes AND the input, set each nodes' value
+    //  to the respective element in the specified layer_ vector.
+    for (int i = 0; i < layers_[layerNum].size() && i < input.size(); i++) {
+        layers_[layerNum][i].setValue((input[i] - min) / (max - min));
+    }
+}
+
 /**
     * Sets the values of the nodes of a layer to those specified in a vector.
     *
@@ -149,6 +172,29 @@ std::vector<double> Network::getLayerValues(int layerNum) {
 }
 
 /**
+    * Softmax function
+*/
+std::vector<double> Network::softmax(int layerNum) {
+    int size = layers_[layerNum].size();
+    std::vector<double> output;
+
+    double val;
+    double summation = 0.0;
+    for (int i = 0; i < size; i++) {
+        val = layers_[layerNum][i].getValue();
+        output.push_back(val);
+
+        summation += std::pow(e, val);
+    }
+
+    for (int i = 0; i < size; i++) {
+        output[i] = std::pow(e, output[i]) / summation;
+    }
+
+    return output;
+}
+
+/**
     * Performs the forward propagation operation on the neural network.
     *
     * The network first recieves the input in the form of an std::vector<double>
@@ -161,16 +207,21 @@ std::vector<double> Network::getLayerValues(int layerNum) {
     * @return std::vector<double> representing the values of the output layer.
 */
 std::vector<double> Network::forwardPropagation(std::vector<double> input) {
-    //Set input layer to the input vector. "0" specifies the first layer
-    setLayerValues(0, input);
+    //Getting layer size
+    int size = layers_.size();
+
+    //Set input layer to the input vector after a min-max normalization. "0" specifies the first layer
+    normalization(0, input);    //setLayerValues(0, input); is the non-normalize alternative
+    //Future plan is combine these two and make normalization only find a layer to normalize
 
     //For every layer ahead of the output, do a forward pass. Time complexity O(N^3)
-    for(int i = 1; i <= layers_.size(); i++) {
+    for(int i = 1; i <= size; i++) {
         forwardPassLayer(i);
     }
 
-    //Return the values of all the nodes of the output layer as a vector of doubles
-    return getLayerValues(layers_.size()-1);
+    //Return the softmaxed values of all the nodes of the output layer as a vector of doubles
+    return softmax(size-1);   //getLayerValues(size-1); is the non-softmax alternative
+    //Future plan is combine these two
 }
 
 /**
@@ -182,5 +233,15 @@ std::vector<double> Network::forwardPropagation(std::vector<double> input) {
 void Network::printLayer(int layerNum) const {
     for (int i = 0; i < layers_[layerNum].size(); i++) {
         layers_[layerNum][i].printNode();
+    }
+}
+
+/**
+    * Prints the entire network
+*/
+void Network::printNetwork() const {
+    for (int i = 0; i < layers_.size(); i++) {
+        std::cout << "\n\nLayer: " << i << " Size: " << layers_[i].size() << std::endl;
+        printLayer(i);
     }
 }

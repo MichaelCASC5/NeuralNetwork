@@ -7,25 +7,19 @@ int main() {
     Network network = {3,2,3};
 
     //Printing the start state of the network before input
-    for (int i = 0; i < network.getLayers().size(); i++) {
-        std::cout << "\n\nLayer: " << i << " Size: " << network.getLayers()[i].size() << std::endl;
-        network.printLayer(i);
-    }
-
-    //Test node
-    // Node * n = &(network.getLayers()[0][0]);
-    // n->setBias(1024);
-    // n->printNode();
+    network.printNetwork();
 
     //Input and Output
     std::vector<double> input = {1024,1920,1080};
     std::vector<double> output = network.forwardPropagation(input);
 
     //Printing the final state of the network after output
-    for (int i = 0; i < network.getLayers().size(); i++) {
-        std::cout << "\n\nLayer: " << i << " Size: " << network.getLayers()[i].size() << std::endl;
-        network.printLayer(i);
-    }
+    network.printNetwork();
+
+    //Test node
+    // Node * n = &(network.getLayers()[0][0]);
+    // n->setBias(1024);
+    // n->printNode();
 
     //Printing the output
     std::cout << "\nOutput: " << std::endl;
