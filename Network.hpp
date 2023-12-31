@@ -30,9 +30,9 @@ class Network{
             NEURAL NETWORK FUNCTIONS
         */
         /**
-            * minmax
+            * Performs a min-max normalization on a given layer.
         */
-        void normalization(int layerNum, std::vector<double> input);
+        void minmaxnormalize(int layerNum);
         
         /**
             * Sets the values of all the nodes of a specified layer to the elements of a vector of doubles.
@@ -55,7 +55,7 @@ class Network{
         std::vector<double> getLayerValues(int layerNum);
 
         /**
-            * Gives a softmax probability distribution of all the specified layer's nodes' values as a vector of doubles.
+            * Gives a softmax probability distribution of all the given layer's nodes' values as a vector of doubles.
         */
         std::vector<double> softmax(int layerNum);
 

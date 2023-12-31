@@ -10,7 +10,7 @@ int main() {
     network.printNetwork();
 
     //Input and Output
-    std::vector<double> input = {1024,1920,1080};
+    std::vector<double> input = {1024000,1920,1080};
     std::vector<double> output = network.forwardPropagation(input);
 
     //Printing the final state of the network after output
