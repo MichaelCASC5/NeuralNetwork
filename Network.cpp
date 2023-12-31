@@ -72,9 +72,9 @@ std::vector<std::vector<Node>>& Network::getLayers() {
     * @param input The std::vector<double> to assign to respective nodes' values.
 */
 void Network::setLayerValues(int layerNum, std::vector<double> input) {
-    //Print to console if the input vector size and input layer size are different
+    //Print to console if the input vector size and specified layer size are different
     if (layers_[layerNum].size() != input.size()) {
-        std::cerr << "WARNING: Input vector size does not match input layer size." << std::endl;
+        std::cerr << "WARNING: Input vector size does not match specified layer size." << std::endl;
     }
 
     //So long as i is less than the amount of nodes AND the input, set each nodes' value
@@ -96,7 +96,56 @@ void Network::setLayerValues(int layerNum, std::vector<double> input) {
     * @param layerNum The specified layer to perform a single propagation
 */
 void Network::forwardPassLayer(int layerNum) {
+    //For each node in the layer
+    for (int i = 0; i < layers_[layerNum].size(); i++) {
 
+        //E wi xi   or  y = mx + b
+        layers_[layerNum][i].RELU(getDotProduct(layerNum-1, i) + layers_[layerNum][i].getBias());
+    }
+}
+
+/**
+    * Gets the dot product of nodes in a layer that connect to a particular node
+    *
+    * For all the nodes of a specified layer, get each node's value_ and edges_
+    * In the edges_ array, get the edge weight at a particular index. This is useful as
+    * the position of an edge that connects to a node one layer ahead, is the same
+    * as the position of that ahead node in its layer ahead.
+    * For example, if a node is in position 3 in its layer, then the weights of its
+    * rear-connected edges are all at index 3 in the edges_ vector of the nodes of the layer behind.
+    * 
+    * Calculate the dot product: node's value * node's relevant edge weight
+    * Add the product to the output until all nodes have been visited.
+    *
+    * @param layerNum The specified layer to calculate the dot product
+    * @param edge The index of the relevant edge weight
+    * @return The sum of all the products of node values and relevant edges weights
+*/
+double Network::getDotProduct(int layerNum, int edge) {
+    double dot = 0.0;
+
+    for (int i = 0; i < layers_[layerNum].size(); i++) {
+        dot += layers_[layerNum][i].getValue() * layers_[layerNum][i].getEdges()[edge];
+    }
+
+    return dot;
+}
+/**
+    * Returns the values of a layer as a vector of doubles
+    *
+    * Traverses the specified layer and gets the value_ of each node within. This value
+    * is pushed into a vector of doubles, which is returned after every node
+    * has been visited.
+    *
+    * @param layerNum The specified layer to read the value_ of all the nodes
+    * @return A vector of doubles containing the values of the layer's nodes
+*/
+std::vector<double> Network::getLayerValues(int layerNum) {
+    std::vector<double> output;
+    for (int i = 0; i < layers_[layerNum].size(); i++) {
+        output.push_back(layers_[layerNum][i].getValue());
+    }
+    return output;
 }
 
 /**
@@ -112,12 +161,26 @@ void Network::forwardPassLayer(int layerNum) {
     * @return std::vector<double> representing the values of the output layer.
 */
 std::vector<double> Network::forwardPropagation(std::vector<double> input) {
+    //Set input layer to the input vector. "0" specifies the first layer
     setLayerValues(0, input);
+
+    //For every layer ahead of the output, do a forward pass. Time complexity O(N^3)
     for(int i = 1; i <= layers_.size(); i++) {
-        std::cout << "LAYER" << std::endl;
         forwardPassLayer(i);
     }
 
-    std::vector<double> output;
-    return output;
+    //Return the values of all the nodes of the output layer as a vector of doubles
+    return getLayerValues(layers_.size()-1);
+}
+
+/**
+    * PRINT METHODS
+*/
+/**
+    * Prints the data contained within a node.
+*/
+void Network::printLayer(int layerNum) const {
+    for (int i = 0; i < layers_[layerNum].size(); i++) {
+        layers_[layerNum][i].printNode();
+    }
 }

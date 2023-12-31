@@ -22,15 +22,18 @@ public:
     //Connection Constructor
     Node(int edgeNum);
 
-    //Accessor
+    //Accessor methods
     double getValue() const;
     double getBias() const;
     std::vector<double> getEdges() const;
 
-    //Mutator
+    //Mutator methods
     void setValue(double value);
     void setBias(double bias);
     void setEdges(std::vector<double> edges);
+
+    //Neuron methods
+    void RELU(double d);
 
     //Print
     void printNode() const;

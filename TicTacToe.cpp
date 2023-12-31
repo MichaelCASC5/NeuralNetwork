@@ -174,7 +174,7 @@ bool TicTacToe::gameOver() const {
     * Sets up a game between two human players
     * 
     * In a game loop, the human is prompted to enter the input.
-    * Then, the win conditions are checked, if they are not met then check
+    * Then the win conditions are checked. If they are not met then check
     * if the game has drawed between the players. If the game has drawed
     * return true. Player one wins if it is the first player to force the draw.
     * If the win conditions are met, then the program returns true/false depending
