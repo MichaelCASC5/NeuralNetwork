@@ -30,7 +30,7 @@ public:
     void humanPlayerTurn();
 
     /**
-     * a random space is chosen is chosen and inputs O
+     * Decides the computer's move
     */
     void computerPlayerTurn();
 
@@ -70,6 +70,14 @@ public:
     */
     bool onePlayerGame();
 
+    /**
+        * NEURAL FUNCTIONS
+    */
+    /**
+        * Interprets the output of the neural network and decides where on the board to move.
+    */
+    int interpretOutput(std::vector<double> vec);
 };
 
+#include "TicTacToe.cpp"
 #endif
