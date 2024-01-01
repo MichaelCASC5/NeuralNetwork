@@ -14,7 +14,7 @@ TicTacToe::TicTacToe() {
     board_.clear();
     available_spaces_.clear();
     for (int i = 0; i < 9; i++) {
-        board_.push_back(Empty); // all cell values are empty
+        board_.push_back(0); // all cell values are empty
     }
     for (int i = 0; i < 9; i++) {
         available_spaces_.push_back(1); // all spaces are available
@@ -51,9 +51,9 @@ void TicTacToe::humanPlayerTurn() {
     available_spaces_[user_input] = 0;
     // marks corresponding board space with X
     if (is_player_one_turn) {
-        board_[user_input] = X;
+        board_[user_input] = 1;
     } else {
-        board_[user_input] = O;
+        board_[user_input] = 2;
     }
 }
 
@@ -66,7 +66,7 @@ void TicTacToe::computerPlayerTurn() {
     while (notset) {
         int x = rand()%9;
         if (board_[x]!= 0) {
-            board_[x] = O;
+            board_[x] = 1;
         } else {
             continue;
         }
@@ -87,9 +87,9 @@ void TicTacToe::displayBoard() const {
         std::cout << "Player Two (O): " << std::endl;
     }
     for (int i = 0; i < 9; i ++ ) {
-        if (board_[i] == X) {
+        if (board_[i] == 1) {
             std :: cout << "[X]";
-        } else if (board_[i] == O) {   
+        } else if (board_[i] == 2) {   
             std :: cout  << "[O]";
         } else {
             std :: cout<<"[ ]";
@@ -181,7 +181,8 @@ bool TicTacToe::twoPlayerGame() {
         //Displays board and lets the player move
         displayBoard();
         humanPlayerTurn();
-
+        std::cout << std::endl;
+        
         //Win conditions
         if (checkThreeInRow()) {
             if (is_player_one_turn) {
