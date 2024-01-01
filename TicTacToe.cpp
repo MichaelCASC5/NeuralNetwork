@@ -126,44 +126,28 @@ bool TicTacToe::checkNoSpaces() const{
 */
 bool TicTacToe::checkThreeInRow() const{
     // checks if three non empty cells in a row
-    if ((board_[0] == board_[1] && board_[1] == board_[2]) && available_spaces_[0] == 0)
-    {
-        std::cout << 1;
+    if ((board_[0] == board_[1] && board_[1] == board_[2]) && available_spaces_[0] == 0) {
         return true; // first row
     }
-    if ((board_[3] == board_[4] && board_[4] == board_[5]) && available_spaces_[3] == 0)
-    {
-        std::cout << 2;
+    if ((board_[3] == board_[4] && board_[4] == board_[5]) && available_spaces_[3] == 0) {
         return true; // second row
     }
-    if ((board_[6] == board_[7] && board_[7] == board_[8]) && available_spaces_[6] == 0)
-    {
-        std::cout << 3;
+    if ((board_[6] == board_[7] && board_[7] == board_[8]) && available_spaces_[6] == 0) {
         return true; // third row
     }
-    if ((board_[0] == board_[3] && board_[3] == board_[6]) && available_spaces_[0] == 0)
-    {
-        std::cout << 4;
+    if ((board_[0] == board_[3] && board_[3] == board_[6]) && available_spaces_[0] == 0) {
         return true; // first column
     }
-    if ((board_[1] == board_[4] && board_[4] == board_[7]) && available_spaces_[1] == 0)
-    {
-        std::cout << 5;
+    if ((board_[1] == board_[4] && board_[4] == board_[7]) && available_spaces_[1] == 0) {
         return true; // second column
     }
-    if ((board_[2] == board_[5] && board_[5] == board_[8]) && available_spaces_[2] == 0)
-    {
-        std::cout << 6;
+    if ((board_[2] == board_[5] && board_[5] == board_[8]) && available_spaces_[2] == 0) {
         return true; // third column
     }
-    if ((board_[0] == board_[4] && board_[4] == board_[8]) && available_spaces_[0] == 0)
-    {
-        std::cout << 7;
+    if ((board_[0] == board_[4] && board_[4] == board_[8]) && available_spaces_[0] == 0) {
         return true; // l to r diagonal
     }
-    if ((board_[2] == board_[4] && board_[4] == board_[6]) && available_spaces_[2] == 0)
-    {
-        std::cout << 8;
+    if ((board_[2] == board_[4] && board_[4] == board_[6]) && available_spaces_[2] == 0) {
         return true; // r to l diagonal
     }
     return false;
@@ -182,25 +166,19 @@ bool TicTacToe::gameOver() const{
  * @post: sets up a game with two humans
 */
 EndResult TicTacToe::twoPlayerGame(){
-    while(!gameOver()){
-
+    while(!gameOver()) {
         displayBoard();
         humanPlayerTurn();
-
-        if (checkThreeInRow()){
-            if (is_player_one_turn)
-            {
+        if (checkThreeInRow()) {
+            if(is_player_one_turn) {
                 displayBoard();
                 return XWins;
-            }
-            else
-            {
+            } else {
                 displayBoard();
                 return OWins;
             }
         }
-        if (checkNoSpaces())
-        {
+        if (checkNoSpaces()) {
             displayBoard();
             return Draw;
         }
@@ -215,22 +193,3 @@ EndResult TicTacToe::twoPlayerGame(){
 bool TicTacToe::onePlayerGame(){
     return true;
 }
-/**
-int main(){
-    TicTacToe x;
-    EndResult y = x.twoPlayerGame();
-    switch (y)
-    {
-    case XWins:
-        std :: cout << "X won :)";
-        break;
-    case OWins:
-        std ::cout << "y won :)";
-        break;
-    case Draw:
-        std ::cout << "womp womp :)";
-        break;
-    }
-
-}
-*/
