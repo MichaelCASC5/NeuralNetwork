@@ -14,7 +14,7 @@ enum EndResult{Draw, XWins, OWins};
 class TicTacToe{
 private:
     // a board has 9 cells, each cell can have value of empty, X, or O
-    std::vector<CellValue> board_; 
+    std::vector<CellValue> board_;
     // an array of cells that are empty
     std::vector<int> available_spaces_;
     // bool representing if player one's turn
@@ -64,7 +64,7 @@ public:
     /**
      * a game with two humans
     */
-    EndResult twoPlayerGame(); 
+    bool twoPlayerGame(); 
 
     /**
      * a game with a human and computer

@@ -46,7 +46,7 @@ Node::Node(int edgeNum){
     std::uniform_real_distribution<double> dis(-1.0, 1.0);//range [-1,1)
     
     //Setting values to random doubles
-    value_ = dis(gen);
+    value_ = 0;
     bias_ = dis(gen);
 
     //Populate edges with random doubles
@@ -110,7 +110,17 @@ void Node::setEdges(std::vector<double> edges) {
 }
 
 /**
-    EXTRA FUNCTIONS
+    * NEURON METHODS
+*/
+/**
+    * RELU activation function
+*/
+void Node::RELU(double d) {
+    value_ = std::max(0.0, d);
+}
+
+/**
+    PRINT METHODS
 */
 /**
     * Prints the information in the node to console.

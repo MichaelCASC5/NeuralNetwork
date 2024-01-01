@@ -3,25 +3,30 @@
 #include "TicTacToe.hpp"
 
 int main() {
-    //Initialization
-    Network network({27,11,9});
+    //Initializing neural network
+    Network network = {3,2,3};
 
-    //Getting each vector
-    std::cout << network.getLayers()[0].size() << std::endl;
-    std::cout << network.getLayers()[1].size() << std::endl;
-    std::cout << network.getLayers()[2].size() << std::endl;
+    //Printing the start state of the network before input
+    network.printNetwork();
 
-    //Testing propagation
-    std::vector<double> input = {5,1,2,4,3,3,9};
-    network.forwardPropagation(input);
+    //Input and Output
+    std::vector<double> input = {1024000,1920,1080};
+    std::vector<double> output = network.forwardPropagation(input);
 
-    //Printing a single node
-    Node * n = &(network.getLayers()[0][0]);
+    //Printing the final state of the network after output
+    network.printNetwork();
+
+    //Test node
+    // Node * n = &(network.getLayers()[0][0]);
     // n->setBias(1024);
-    n->printNode();
+    // n->printNode();
 
-    Node * n1 = &(network.getLayers()[0][1]);
-    n1->printNode();
+    //Printing the output
+    std::cout << "\nOutput: " << std::endl;
+    for (int i = 0; i < output.size(); i++) {
+        std::cout << output[i] << " ";
+    }
+    std::cout << std::endl;
 
     return 0;
 }
