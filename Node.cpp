@@ -114,6 +114,13 @@ void Node::setEdges(std::vector<double> edges) {
 */
 /**
     * RELU activation function
+    *
+    * Accepts an input and assigns the value_ to the maximum of
+    * either zero or the input itself.  max(0, input)
+    * Essentially, if the input is less than 0, assign it to 0
+    * if the input is greater than 0, leave it as it is.
+    *
+    * @param d A double of the supposed input to activate the node
 */
 void Node::RELU(double d) {
     value_ = std::max(0.0, d);

@@ -2,7 +2,7 @@
  * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
 */
 
-#include "TicTacToe.hpp"
+// #include "TicTacToe.hpp"
 
 /**
  * Default constructor makes a game of TicTacToe
@@ -61,17 +61,35 @@ void TicTacToe::humanPlayerTurn() {
  * a random space is chosen is chosen and inputs O
 */
 void TicTacToe::computerPlayerTurn() {
-    srand(time(NULL));
-    bool notset; 
-    while (notset) {
-        int x = rand()%9;
-        if (board_[x]!= 0) {
-            board_[x] = 1;
-        } else {
-            continue;
-        }
+    Network network = {9,11,9};
+    
+    std::vector<double> input(board_.begin(), board_.end());
+    std::vector<double> output = network.forwardPropagation(input);
+
+    int computer_input = interpretOutput(output);
+
+    for (int i = 0; i < output.size(); i++) {
+        std::cout << output[i] << std::endl;
+    }
+    
+    std::cout << "computer_input " << computer_input << std::endl;
+
+    while (available_spaces_[computer_input] != 1) {
+        std::cout << "Invalid computer input, moving up by one: ";
+        // std::cin >> user_input;
+        computer_input = (computer_input + 1) % 9;
     }
 
+    std::cout << "computer_input " << computer_input << std::endl;
+
+    // sets the chosen space to 0, marking that it is not available
+    available_spaces_[computer_input] = 0;
+    // marks corresponding board space with X
+    if (is_player_one_turn) {
+        board_[computer_input] = 1;
+    } else {
+        board_[computer_input] = 2;
+    }
 }
 
 /**
@@ -214,24 +232,64 @@ bool TicTacToe::twoPlayerGame() {
  * @post: sets up a game with a human and dumb computer
 */
 bool TicTacToe::onePlayerGame() {
-    return true;
-}
-/**
-int main() {
-    TicTacToe x;
-    EndResult y = x.twoPlayerGame();
-    switch (y)
-    {
-    case XWins:
-        std :: cout << "X won :)";
-        break;
-    case OWins:
-        std ::cout << "y won :)";
-        break;
-    case Draw:
-        std ::cout << "womp womp :)";
-        break;
+    bool output;
+    while (1) {
+
+        //Displays board and lets the player move
+        if (is_player_one_turn) {
+            displayBoard();
+            humanPlayerTurn();
+        } else {
+            computerPlayerTurn();
+        }
+
+        //Win conditions
+        if (checkThreeInRow()) {
+            if (is_player_one_turn) {
+                displayBoard();
+                output = true;
+                break;
+            } else {
+                displayBoard();
+                output = false;
+                break;
+            }
+        }
+
+        //Draw
+        if (checkNoSpaces()) {
+            displayBoard();
+            output = true;
+            break;
+        }
+
+        //Switch player
+        togglePlayer();
     }
 
+    return output; 
 }
+
+/**
+    * NEURAL FUNCTIONS
 */
+/**
+    * Interprets neural output
+*/
+int TicTacToe::interpretOutput(std::vector<double> vec) {
+    //Initializing the maximum value found and its index
+    double max = 0.0;
+    int index = 0;
+
+    double val;
+    for (int i = 0; i < vec.size(); i++) {
+        val = vec[i];
+
+        if (val > max) {
+            max = val;
+            index = i;
+        }
+    }
+
+    return index;
+}
