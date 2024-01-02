@@ -29,18 +29,11 @@ int main() {
 
     // std::cout << std::endl;
 
-    network.printNetwork();
-    
-    network.mutate(0.01);
-
-    network.printNetwork();
-    std::cout << std::endl;
-
+    Network net1 = {9, 11, 9};
     Network net2 = {9, 11, 9};
+
     TicTacToe board;
     std::cout << board.onePlayerGame(net2) << std::endl;
-
-
 
     return 0;
 }

@@ -23,10 +23,13 @@ Network::Network(){
     for (int i = 0; i < 2; i++){
         // initialize a vector of nodes
         std::vector<Node> nodes;
+
         // initialize a node
         Node new_node;
+
         // add node to node vector
         nodes.push_back(new_node);
+
         // add node vector to layers vector
         layers.push_back(nodes);
     }
@@ -401,19 +404,20 @@ void Network::printNetwork() const {
  * Ex: random value is 0.5, edge weight was 1, mutated edge weight is 1.5
  * 
  * @param: a double value
- * @post: add a random number (bounded by -val and val) from all the edge weights and all the biases of the network
+ * @post: add a random number (bounded by -threshold and threshold) from all the edge weights and all the biases of the network
 */
-void Network::mutate(double val){
-    // Random number generator, bounds are -val and val
+void Network::mutate(double threshold){
+    // Random number generator, bounds are -threshold and threshold
     std::random_device rd;
     std::mt19937 gen(rd());//Mersenne Twister
-    std::uniform_real_distribution<double> dis(-val, val);
+    std::uniform_real_distribution<double> dis(-threshold, threshold);
 
     // iterate through each node
     for(int i = 0; i < layers_.size(); i++) {
         
         for(int j = 0; j < layers_[i].size(); j++) {
             // iterate through edges vector
+            
             for(int k = 0; k < layers_[i][j].getEdges().size(); k++) {
                 // add mutate value to mutated edges vector
                 layers_[i][j].getEdges()[k] = layers_[i][j].getEdges()[k] + dis(gen);

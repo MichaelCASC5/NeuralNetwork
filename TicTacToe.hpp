@@ -74,13 +74,17 @@ public:
     bool onePlayerGame(Network & network);
 
     /**
-        * NEURAL FUNCTIONS
+     * A game between two neural networks
+    */
+
+    /**
+        * NEURAL INTERPRETATION FUNCTIONS
     */
     /**
         * Interprets the output of the neural network and decides where on the board to move.
     */
     int interpretOutput(std::vector<double> vec);
-    
+
     /**
         * Flips the X and O values in the board for use in a player 2 neural network
     */
