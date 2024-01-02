@@ -28,8 +28,27 @@ int main() {
     }
     std::cout << std::endl;
 
-    TicTacToe board;
-    std::cout << board.onePlayerGame() << std::endl;
+      for (int i = 0; i < network.getLayers().size(); i++) {
+        for (int j = 0; j < network.getLayers()[i].size(); j++) {
+            network.getLayers()[i][j].printNode();
+        }
+    }
+    std::cout << std::endl;
+    
+    network.mutate(1.0);
+    std::cout << "\nMutate: " << std::endl;
+    for (int i = 0; i < network.getLayers().size(); i++) {
+        for (int j = 0; j < network.getLayers()[i].size(); j++) {
+            network.getLayers()[i][j].printNode();
+        }
+    }
+    std::cout << std::endl;
+
+
+    // TicTacToe board;
+    // std::cout << board.onePlayerGame() << std::endl;
+
+
 
     return 0;
 }

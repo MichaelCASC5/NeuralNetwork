@@ -19,7 +19,24 @@ class Network{
         /**
             CONSTRUCTORS
         */
+        
+        /**
+            * DEFAULT CONSTRUCTOR
+        */
         Network();
+
+        /**
+            * Connects the neural network
+            *
+            * The input of the array is read as an initializer_list. e.g.({1,2,3}) or vector, etc.
+            * This array is then traversed, and for each element a new vector of nodes of
+            * that length is created. Each new vector of nodes is then pushed to the
+            * layers_ 2D vector.
+            * As each node is pushed to a layer, it builds as many edges as there are nodes
+            * in the next layer.
+            *
+            * @param initializer_list Represents how many nodes should be in each layer of the network.
+        */
         Network(std::initializer_list<int> arr);
 
         /**
@@ -87,6 +104,12 @@ class Network{
             * Print the entire network
         */
         void printNetwork() const;
+
+        /**
+         * iterate through every node of every layer, add or subtract a random number from all the edge weights and all the biases of the network
+         * Ex: mutation: 0.5, edge weight was 1, mutated edge weight is 1.5
+        */
+        void mutate(double val);
 };
 
 #include "Network.cpp"

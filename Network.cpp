@@ -7,12 +7,24 @@
 /**
     * CONSTRUCTORS
 */
+
+/**
+    * DEFAULT CONSTRUCTOR
+*/
 Network::Network(){
-    std::vector<std::vector<Node>> layers;
+    // initialize a 2D vector of nodes
+    std::vector<std::vector<Node>> layers; 
+
+    // a default Network has 2 layers, each with 1 vector of nodes containing 1 node
+    // iterate 2 times 
     for (int i = 0; i < 2; i++){
+        // initialize a vector of nodes
         std::vector<Node> nodes;
+        // initialize a node
         Node new_node;
+        // add node to node vector
         nodes.push_back(new_node);
+        // add node vector to layers vector
         layers.push_back(nodes);
     }
 }
@@ -56,22 +68,36 @@ Network::Network(std::initializer_list<int> arr) {
     //Deallocate
     delete[] input;
 }
+
 /**
     COPY CONSTRUCTOR
 */
-Network::Network(const Network& another_network){   
+Network::Network(const Network& another_network){ 
+    // initialize a 2D vector of nodes  
     std::vector<std::vector<Node>> layers;
+
+    // for every element (layer/vector of nodes) in another_network layer, iterate through the vector of nodes
+    // use a parameterized constructor to create a node with the same value, bias, and edge
     for(int i = 0; i < another_network.layers_.size(); i++) {
+        // initialize a vector of nodes
         std::vector<Node> nodes;
+
+        // iterate through every node in another_network layer
         for(int j = 0; j < another_network.layers_[i].size(); j++) {
+            // construct a new node using the values in another_network node
             Node add_node(another_network.layers_[i][j].getValue(), 
                 another_network.layers_[i][j].getBias(),
                 another_network.layers_[i][j].getEdges());
+
+            // add node to nodes vector
             nodes.push_back(add_node);
-            std::cout << add_node.getValue() << std::endl;
         }
+
+        // add nodes vector to layers
         layers.push_back(nodes);
     }
+
+    // private member variable layers_ is set to layers
     layers_ = layers;
 }
 
@@ -79,18 +105,31 @@ Network::Network(const Network& another_network){
     COPY ASSIGNMENT OPERATOR
 */
 Network& Network::operator=(const Network& another_network){
+    // initialize a 2D vector of nodes  
     std::vector<std::vector<Node>> layers;
+
+    // for every element (layer/vector of nodes) in another_network layer, iterate through the vector of nodes
+    // use a parameterized constructor to create a node with the same value, bias, and edge
     for(int i = 0; i < another_network.layers_.size(); i++) {
+        // initialize a vector of nodes
         std::vector<Node> nodes;
+
+        // iterate through every node in another_network layer
         for(int j = 0; j < another_network.layers_[i].size(); j++) {
+            // construct a new node using the values in another_network node
             Node add_node(another_network.layers_[i][j].getValue(), 
                 another_network.layers_[i][j].getBias(),
                 another_network.layers_[i][j].getEdges());
+
+            // add node to nodes vector
             nodes.push_back(add_node);
-            std::cout << add_node.getValue() << std::endl;
         }
+
+        // add nodes vector to layers
         layers.push_back(nodes);
     }
+
+    // private member variable layers_ is set to layers
     layers_ = layers;
     return *this;
 }
@@ -344,5 +383,34 @@ void Network::printNetwork() const {
     for (int i = 0; i < layers_.size(); i++) {
         std::cout << "\n\nLayer: " << i << " Size: " << layers_[i].size() << std::endl;
         printLayer(i);
+    }
+}
+
+/**
+ * iterate through every node of every layer, add or subtract a random number from all the edge weights and all the biases of the network
+ * Ex: mutation: 0.5, edge weight was 1, mutated edge weight is 1.5
+*/
+void Network::mutate(double val){
+    // Random number generator, bounds are -val and val
+    std::random_device rd;
+    std::mt19937 gen(rd());//Mersenne Twister
+    std::uniform_real_distribution<double> dis(-val, val);
+
+    // iterate through each node
+    for(int i = 0; i < layers_.size(); i++) {
+        
+        for(int j = 0; j < layers_[i].size(); j++) {
+            // initialize a vector of doubles, this vector contains mutated edge values
+            std::vector<double> mutated_edges;
+
+            // iterate through edges vector
+            for(int k = 0; k < layers_[i][j].getEdges().size(); k++) {
+                // add mutated value to mutated edges vector
+                mutated_edges.push_back(layers_[i][j].getEdges()[k] + dis(gen));
+            }
+
+            // mutate bias values
+            layers_[i][j].setBias(layers_[i][j].getBias() + dis(gen));
+        }
     }
 }
