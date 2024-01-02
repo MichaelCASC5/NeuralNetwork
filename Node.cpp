@@ -5,10 +5,11 @@
 /**
     * CONSTRUCTORS
 */
+
 /**
     * Default Constructor
     *
-    * Sets all values to 0 and edges_ to empty
+    * @post: Sets all values to 0 and edges_ to empty
 */
 Node::Node():value_(0), bias_(0) {
     edges_ = {};
@@ -17,16 +18,41 @@ Node::Node():value_(0), bias_(0) {
 /**
     * Parameterized Constructor
     *
-    * Sets all values to input and edges_ to a vector
-    *
     * @param value Sets value_
     * @param bias Sets bias_
     * @param edges Is a std::vector<double> and sets edges_
+    * @post: sets all values to input and edges_ to a vector
 */
 Node::Node(double value, double bias, std::vector<double> edges):Node() {
     value_ = value;
     bias_ = bias;
     edges_ = edges;
+}
+
+/**
+ * COPY CONSTRUCTOR
+ *
+ * @param: const reference to another node
+ * @post: sets all values to another_node's values
+*/
+Node::Node(const Node& another_node){
+    value_ = another_node.value_;
+    bias_ = another_node.bias_;
+    edges_ = another_node.edges_;
+}
+
+/**
+ * COPY ASSIGNMENT OPERATOR
+ *
+ * @param: const reference to another node
+ * @post: assigns all values to another_node's values
+ * @return: this node
+*/
+Node& Node::operator=(const Node& another_node){
+    value_ = another_node.value_;
+    bias_ = another_node.bias_;
+    edges_ = another_node.edges_;
+    return *this;
 }
 
 /**
@@ -87,6 +113,7 @@ std::vector<double> Node::getEdges() const {
 /**
     * MUTATOR METHODS
 */
+
 /**
     * Sets value_
     * @param value Sets value_
@@ -129,6 +156,7 @@ void Node::RELU(double d) {
 /**
     PRINT METHODS
 */
+
 /**
     * Prints the information in the node to console.
 */

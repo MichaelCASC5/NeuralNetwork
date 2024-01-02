@@ -10,6 +10,9 @@
 
 /**
     * DEFAULT CONSTRUCTOR
+    * 
+    * @post: initializes a default network, with 2 layers each consisting of a vector of one node
+    *        Node values are default
 */
 Network::Network(){
     // initialize a 2D vector of nodes
@@ -70,7 +73,9 @@ Network::Network(std::initializer_list<int> arr) {
 }
 
 /**
-    COPY CONSTRUCTOR
+ * COPY CONSTRUCTOR
+ * @param: const reference to another network
+ * @post: sets all values to another_network's values
 */
 Network::Network(const Network& another_network){ 
     // initialize a 2D vector of nodes  
@@ -102,7 +107,10 @@ Network::Network(const Network& another_network){
 }
 
 /**
-    COPY ASSIGNMENT OPERATOR
+ * COPY ASSIGNMENT OPERATOR
+ * @param: const reference to another network
+ * @post: assigns all values to another_network's values
+ * @return: this network
 */
 Network& Network::operator=(const Network& another_network){
     // initialize a 2D vector of nodes  
@@ -387,8 +395,13 @@ void Network::printNetwork() const {
 }
 
 /**
- * iterate through every node of every layer, add or subtract a random number from all the edge weights and all the biases of the network
- * Ex: mutation: 0.5, edge weight was 1, mutated edge weight is 1.5
+ * Generate a random double between -val and val
+ * Iterate through every node of every layer
+ * add random double for all edge weights and all biases of the network
+ * Ex: random value is 0.5, edge weight was 1, mutated edge weight is 1.5
+ * 
+ * @param: a double value
+ * @post: add a random number (bounded by -val and val) from all the edge weights and all the biases of the network
 */
 void Network::mutate(double val){
     // Random number generator, bounds are -val and val
@@ -400,13 +413,10 @@ void Network::mutate(double val){
     for(int i = 0; i < layers_.size(); i++) {
         
         for(int j = 0; j < layers_[i].size(); j++) {
-            // initialize a vector of doubles, this vector contains mutated edge values
-            std::vector<double> mutated_edges;
-
             // iterate through edges vector
             for(int k = 0; k < layers_[i][j].getEdges().size(); k++) {
-                // add mutated value to mutated edges vector
-                mutated_edges.push_back(layers_[i][j].getEdges()[k] + dis(gen));
+                // add mutate value to mutated edges vector
+                layers_[i][j].getEdges()[k] = layers_[i][j].getEdges()[k] + dis(gen);
             }
 
             // mutate bias values

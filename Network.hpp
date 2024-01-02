@@ -22,6 +22,9 @@ class Network{
         
         /**
             * DEFAULT CONSTRUCTOR
+            * 
+            * @post: initializes a default network, with 2 layers each consisting of a vector of one node
+            *        Node values are default
         */
         Network();
 
@@ -106,8 +109,7 @@ class Network{
         void printNetwork() const;
 
         /**
-         * iterate through every node of every layer, add or subtract a random number from all the edge weights and all the biases of the network
-         * Ex: mutation: 0.5, edge weight was 1, mutated edge weight is 1.5
+         * add random double for all edge weights and all biases of the network
         */
         void mutate(double val);
 };
