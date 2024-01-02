@@ -68,7 +68,7 @@ public:
     /**
      * a game with a human and computer
     */
-    bool onePlayerGame();
+    bool onePlayerGame(Network & network);
 
     /**
         * NEURAL FUNCTIONS
