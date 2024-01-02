@@ -25,6 +25,9 @@ public:
     TicTacToe();
 
     /**
+        * GAME FUNCTIONS
+    */
+    /**
      * a human chooses an available space and inputs X, player can only be X. That space then becomes unavailable
     */
     void humanPlayerTurn();
@@ -32,7 +35,7 @@ public:
     /**
      * Decides the computer's move
     */
-    void computerPlayerTurn();
+    void computerPlayerTurn(Network & network);
 
     /**
      * takes cell values of board and displays, empty cells represented by #
@@ -77,6 +80,11 @@ public:
         * Interprets the output of the neural network and decides where on the board to move.
     */
     int interpretOutput(std::vector<double> vec);
+    
+    /**
+        * Flips the X and O values in the board for use in a player 2 neural network
+    */
+    std::vector<int> flipBoard();
 };
 
 #include "TicTacToe.cpp"
