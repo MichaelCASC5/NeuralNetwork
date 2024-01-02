@@ -33,7 +33,7 @@ int main() {
     Network net2 = {9, 11, 9};
 
     TicTacToe board;
-    std::cout << board.onePlayerGame(net2) << std::endl;
+    std::cout << board.play(net1, net2) << std::endl;
 
     return 0;
 }

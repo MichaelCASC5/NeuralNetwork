@@ -2,8 +2,6 @@
  * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
 */
 
-// #include "TicTacToe.hpp"
-
 /**
  * Default constructor makes a game of TicTacToe
  * Default values of board are empty
@@ -13,12 +11,15 @@
 TicTacToe::TicTacToe() {
     board_.clear();
     available_spaces_.clear();
+
     for (int i = 0; i < 9; i++) {
         board_.push_back(0); // all cell values are empty
     }
+
     for (int i = 0; i < 9; i++) {
         available_spaces_.push_back(1); // all spaces are available
     }
+
     is_player_one_turn = true; // starts with player one's turn
 }
 
@@ -28,27 +29,33 @@ TicTacToe::TicTacToe() {
 void TicTacToe::humanPlayerTurn() {
     // prints a board with available spaces, blank if not available
     for (int i = 0; i < 9; i++) {
+
         // if value is 0, prints an empty space
         if(available_spaces_[i] == 0) {
             std::cout << "[ ]";
         } else {
             std::cout << "[" << i << "]";
         }
+
         if (i == 2 || i == 5 || i == 8) {
             std::cout << std::endl;
         }
     }
+
     // user inputs a value for what space they want
     int user_input;
     std::cout << "Enter an available space: ";
     std::cin >> user_input;
+
     // if the input is not an avaliable space, asks user to reenter
     while (available_spaces_[user_input] != 1) {
         std::cout << "Invalid input, please reenter: ";
         std::cin >> user_input;
     }
+
     // sets the chosen space to 0, marking that it is not available
     available_spaces_[user_input] = 0;
+
     // marks corresponding board space with X
     if (is_player_one_turn) {
         board_[user_input] = 1;
@@ -96,9 +103,10 @@ void TicTacToe::computerPlayerTurn(Network & network) {
 
     //Add one to the computer's decision if the cel is already occupied until a free cell is found. 
     while (available_spaces_[computer_input] != 1) {
-        std::cerr << "Invalid computer input, moving up by one: " << computer_input;
+        std::cerr << computer_input << " is invalid input +1= ";
         computer_input = (computer_input + 1) % 9;
     }
+    std::cout << "\n";
 
     // sets the chosen space to 0, marking that it is not available
     available_spaces_[computer_input] = 0;
@@ -123,6 +131,7 @@ void TicTacToe::displayBoard() const {
     } else {
         std::cout << "Player Two (O): " << std::endl;
     }
+
     for (int i = 0; i < 9; i ++ ) {
         if (board_[i] == 1) {
             std :: cout << "[X]";
@@ -131,10 +140,12 @@ void TicTacToe::displayBoard() const {
         } else {
             std :: cout<<"[ ]";
         }
+
         if (i == 2 || i == 5|| i == 8) {
             std::cout << std::endl;
         }
     }
+
     std::cout<< std::endl;
 }
 
@@ -154,6 +165,7 @@ bool TicTacToe::checkNoSpaces() const {
            return false;
         }
     }
+    
     return true;
     
 }
@@ -205,7 +217,7 @@ bool TicTacToe::gameOver() const {
     * In a game loop, the human is prompted to enter the input.
     * Then the win conditions are checked. If they are not met then check
     * if the game has drawed between the players. If the game has drawed
-    * return true. Player one wins if it is the first player to force the draw.
+    * return false. Player one wins if it is the first player to force the draw.
     * If the win conditions are met, then the program returns true/false depending
     * on whether player one won.
     *
@@ -236,7 +248,7 @@ bool TicTacToe::twoPlayerGame() {
         //Draw
         if (checkNoSpaces()) {
             displayBoard();
-            output = true;
+            output = false;
             break;
         }
 
@@ -254,7 +266,7 @@ bool TicTacToe::twoPlayerGame() {
     * plays, the neural network plays.
     * Then the win conditions are checked. If they are not met then check
     * if the game has drawed between the players. If the game has drawed
-    * return true. Player one wins if it is the first player to force the draw.
+    * return false. Player one wins if it is the first player to force the draw.
     * If the win conditions are met, then the program returns true/false depending
     * on whether player one won.
     *
@@ -288,7 +300,58 @@ bool TicTacToe::onePlayerGame(Network & network) {
         //Draw
         if (checkNoSpaces()) {
             displayBoard();
-            output = true;
+            output = false;
+            break;
+        }
+
+        //Switch player
+        togglePlayer();
+    }
+
+    return output; 
+}
+
+/**
+    * Sets up a game between two neural networks
+    * 
+    * In a game loop, two neural networks play during their respective turns
+    * against each other.
+    * Then the win conditions are checked. If they are not met then check
+    * if the game has drawed between the players. If the game has drawed
+    * return false. Network one wins if it is the first network to force the draw.
+    * If the win conditions are met, then the program returns true/false depending
+    * on whether network one won.
+    *
+    * @return If network one won the game.
+*/
+bool TicTacToe::play(Network & network1, Network & network2) {
+    bool output;
+    while (1) {
+
+        //Lets networks move
+        if (is_player_one_turn) {
+            computerPlayerTurn(network1);
+        } else {
+            computerPlayerTurn(network2);
+        }
+
+        //Displays board
+        displayBoard();
+
+        //Win conditions
+        if (checkThreeInRow()) {
+            if (is_player_one_turn) {
+                output = true;
+                break;
+            } else {
+                output = false;
+                break;
+            }
+        }
+
+        //Draw
+        if (checkNoSpaces()) {
+            output = false;
             break;
         }
 

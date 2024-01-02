@@ -14,8 +14,10 @@ class TicTacToe{
 private:
     // a board has 9 cells, each cell can have value of empty, X, or O
     std::vector<int> board_;
+
     // an array of cells that are empty
     std::vector<int> available_spaces_;
+    
     // bool representing if player one's turn
     bool is_player_one_turn;
 public:
@@ -76,6 +78,7 @@ public:
     /**
      * A game between two neural networks
     */
+    bool play(Network & network1, Network & network2);
 
     /**
         * NEURAL INTERPRETATION FUNCTIONS
