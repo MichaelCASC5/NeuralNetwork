@@ -124,7 +124,7 @@ void TicTacToe::displayBoard() const {
 */
 void TicTacToe::togglePlayer() {
     is_player_one_turn = !is_player_one_turn;
-}  
+}
 
 /**
  * @return: true if no spaces left, every element in available_space_ is 0
@@ -231,7 +231,7 @@ bool TicTacToe::twoPlayerGame() {
 /**
  * @post: sets up a game with a human and dumb computer
 */
-bool TicTacToe::onePlayerGame() {
+bool TicTacToe::onePlayerGame(Network & network) {
     bool output;
     while (1) {
 

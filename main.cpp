@@ -4,13 +4,13 @@
 
 int main() {
     //Initializing neural network
-    Network network = {3,2,3};
+    Network network = {3, 2, 3};
 
     //Printing the start state of the network before input
     network.printNetwork();
 
     //Input and Output
-    std::vector<double> input = {1024,1920,1080};
+    std::vector<double> input = {1024, 1920, 1080};
     std::vector<double> output = network.forwardPropagation(input);
 
     //Printing the final state of the network after output
@@ -28,8 +28,9 @@ int main() {
     }
     std::cout << std::endl;
 
+    Network net2 = {9, 11, 9};
     TicTacToe board;
-    std::cout << board.onePlayerGame() << std::endl;
+    std::cout << board.onePlayerGame(net2) << std::endl;
 
     return 0;
 }
