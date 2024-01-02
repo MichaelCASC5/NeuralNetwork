@@ -7,6 +7,16 @@
 /**
     * CONSTRUCTORS
 */
+Network::Network(){
+    std::vector<std::vector<Node>> layers;
+    for (int i = 0; i < 2; i++){
+        std::vector<Node> nodes;
+        Node new_node;
+        nodes.push_back(new_node);
+        layers.push_back(nodes);
+    }
+}
+
 /**
     * Connects the neural network
     *
@@ -45,6 +55,44 @@ Network::Network(std::initializer_list<int> arr) {
 
     //Deallocate
     delete[] input;
+}
+/**
+    COPY CONSTRUCTOR
+*/
+Network::Network(const Network& another_network){   
+    std::vector<std::vector<Node>> layers;
+    for(int i = 0; i < another_network.layers_.size(); i++) {
+        std::vector<Node> nodes;
+        for(int j = 0; j < another_network.layers_[i].size(); j++) {
+            Node add_node(another_network.layers_[i][j].getValue(), 
+                another_network.layers_[i][j].getBias(),
+                another_network.layers_[i][j].getEdges());
+            nodes.push_back(add_node);
+            std::cout << add_node.getValue() << std::endl;
+        }
+        layers.push_back(nodes);
+    }
+    layers_ = layers;
+}
+
+/**
+    COPY ASSIGNMENT OPERATOR
+*/
+Network& Network::operator=(const Network& another_network){
+    std::vector<std::vector<Node>> layers;
+    for(int i = 0; i < another_network.layers_.size(); i++) {
+        std::vector<Node> nodes;
+        for(int j = 0; j < another_network.layers_[i].size(); j++) {
+            Node add_node(another_network.layers_[i][j].getValue(), 
+                another_network.layers_[i][j].getBias(),
+                another_network.layers_[i][j].getEdges());
+            nodes.push_back(add_node);
+            std::cout << add_node.getValue() << std::endl;
+        }
+        layers.push_back(nodes);
+    }
+    layers_ = layers;
+    return *this;
 }
 
 /**

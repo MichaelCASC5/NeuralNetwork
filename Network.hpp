@@ -19,7 +19,18 @@ class Network{
         /**
             CONSTRUCTORS
         */
+        Network();
         Network(std::initializer_list<int> arr);
+
+        /**
+            COPY CONSTRUCTOR
+        */
+        Network(const Network& another_network);
+
+        /**
+            COPY ASSIGNMENT OPERATOR
+        */
+        Network& operator=(const Network& another_network);
 
         /**
             ACCESSOR METHODS
