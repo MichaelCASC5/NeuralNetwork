@@ -29,11 +29,15 @@ int main() {
 
     // std::cout << std::endl;
 
-    Network net1 = {9, 11, 9};
-    Network net2 = {9, 11, 9};
+    Network net1 = {3, 2, 3};
+    net1.forwardPropagation(input);
+    net1.printNetwork();
+    net1.mutate(0.001);
+    net1.printNetwork();
+    // Network net2 = {9, 11, 9};
 
-    TicTacToe board;
-    std::cout << board.play(net1, net2) << std::endl;
+    // TicTacToe board;
+    // std::cout << board.play(net1, net2) << std::endl;
 
     return 0;
 }

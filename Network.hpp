@@ -87,6 +87,16 @@ public:
     std::vector<double> forwardPropagation(std::vector<double> input);
 
     /**
+        * Mutates the weights and biases of every node in a specified layer by a certain threshold
+    */
+    void mutateLayer(int layerNum, double threshold);
+
+    /**
+        * Mutates the weights and biases of every node in the network by a certain threshold
+    */
+    void mutate(double threshold);
+
+    /**
         * PRINT METHODS
     */
     /**
@@ -98,11 +108,6 @@ public:
         * Print the entire network
     */
     void printNetwork() const;
-
-    /**
-        * Mutates the weights and biases of every node in the network with a certain threshold
-    */
-    void mutate(double threshold);
 };
 
 #include "Network.cpp"

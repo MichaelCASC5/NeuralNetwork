@@ -376,6 +376,40 @@ std::vector<double> Network::forwardPropagation(std::vector<double> input) {
 }
 
 /**
+    * Mutates all the nodes of a specified layer by a random amount
+    * 
+    * Iterate through every node of a specified layer, and mutate each one
+    *
+    * @param layerNum The specified layer to mutate
+    * @param threshold A double that represents the bounds of the mutation value
+*/
+void Network::mutateLayer(int layerNum, double threshold){
+    //Traverse all the nodes of a layer
+    for (int i = 0; i < layers_[layerNum].size(); i++) {
+        
+        //Mutate each node by the threshold
+        layers_[layerNum][i].mutate(threshold);
+    }
+}
+
+/**
+    * Mutate every node in every layer of the network.
+    *
+    * The layers of the network are traversed and each one is mutated.
+    *
+    * @param threshold The positive upper and negative lower bounds of the mutation
+    * @post: add a random number (bounded by -threshold and threshold) from all the edge weights and all the biases of the network
+*/
+void Network::mutate(double threshold){
+    //Iterate through each layer
+    for(int i = 0; i < layers_.size(); i++) {
+        
+        //Mutate each layer, while passing threshold
+        mutateLayer(i, threshold);
+    }
+}
+
+/**
     * PRINT METHODS
 */
 /**
@@ -394,37 +428,5 @@ void Network::printNetwork() const {
     for (int i = 0; i < layers_.size(); i++) {
         std::cout << "\n\nLayer: " << i << " Size: " << layers_[i].size() << std::endl;
         printLayer(i);
-    }
-}
-
-/**
- * Generate a random double between -val and val
- * Iterate through every node of every layer
- * add random double for all edge weights and all biases of the network
- * Ex: random value is 0.5, edge weight was 1, mutated edge weight is 1.5
- * 
- * @param: a double value
- * @post: add a random number (bounded by -threshold and threshold) from all the edge weights and all the biases of the network
-*/
-void Network::mutate(double threshold){
-    // Random number generator, bounds are -threshold and threshold
-    std::random_device rd;
-    std::mt19937 gen(rd());//Mersenne Twister
-    std::uniform_real_distribution<double> dis(-threshold, threshold);
-
-    // iterate through each node
-    for(int i = 0; i < layers_.size(); i++) {
-        
-        for(int j = 0; j < layers_[i].size(); j++) {
-            // iterate through edges vector
-            
-            for(int k = 0; k < layers_[i][j].getEdges().size(); k++) {
-                // add mutate value to mutated edges vector
-                layers_[i][j].getEdges()[k] = layers_[i][j].getEdges()[k] + dis(gen);
-            }
-
-            // mutate bias values
-            layers_[i][j].setBias(layers_[i][j].getBias() + dis(gen));
-        }
     }
 }

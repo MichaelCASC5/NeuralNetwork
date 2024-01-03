@@ -36,6 +36,7 @@ public:
 
     //Neuron methods
     void RELU(double d);
+    void mutate(double threshold);
 
     //Print
     void printNode() const;

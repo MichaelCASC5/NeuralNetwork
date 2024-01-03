@@ -154,6 +154,29 @@ void Node::RELU(double d) {
 }
 
 /**
+    * Mutates the weights and biases of a node by a bounded random amount
+    *
+    * The threshold represents the upper positive and lower negative bounds of a random
+    * double. Such a random number will be added both to each edge and to the bias.
+    *
+    * @param threshold The upper positive and lower negative bounds of a random double.
+*/
+void Node::mutate(double threshold) {
+    //Random number generator, bounds are -threshold and threshold
+    std::random_device rd;
+    std::mt19937 gen(rd());//Mersenne Twister
+    std::uniform_real_distribution<double> dis(-threshold, threshold);
+
+    //Iterate through the edges, for each one add the random double
+    for (int i = 0; i < edges_.size(); i++) {
+        edges_[i] = edges_[i] + dis(gen);
+    }
+
+    //Add the random double the the bias_
+    bias_ = bias_ + dis(gen);
+}
+
+/**
     PRINT METHODS
 */
 
