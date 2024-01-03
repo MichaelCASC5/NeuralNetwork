@@ -33,27 +33,32 @@ Node::Node(double value, double bias, std::vector<double> edges):Node() {
  * COPY CONSTRUCTOR
  *
  * @param: const reference to another node
- * @post: sets all values to another_node's values
+ * @post: sets all values to other's values
 */
-Node::Node(const Node& another_node){
-    value_ = another_node.value_;
-    bias_ = another_node.bias_;
-    edges_ = another_node.edges_;
+Node::Node(const Node& other){
+    value_ = other.value_;
+    bias_ = other.bias_;
+    edges_ = other.edges_;
 }
 
 /**
  * COPY ASSIGNMENT OPERATOR
  *
  * @param: const reference to another node
- * @post: assigns all values to another_node's values
+ * @post: assigns all values to other's values
  * @return: this node
 */
-Node& Node::operator=(const Node& another_node){
-    value_ = another_node.value_;
-    bias_ = another_node.bias_;
-    edges_ = another_node.edges_;
+Node& Node::operator=(const Node& other){
+    value_ = other.value_;
+    bias_ = other.bias_;
+    edges_ = other.edges_;
     return *this;
 }
+
+/**
+    * DESTRUCTOR
+*/
+Node::~Node(){}
 
 /**
     * Connection constructor that connects the node to the rest of the network.

@@ -18,8 +18,9 @@ public:
     //Constructors
     Node();
     Node(double value, double bias, std::vector<double> edges);
-    Node(const Node& another_node);
-    Node& operator=(const Node& another_node);
+    Node(const Node& other);
+    Node& operator=(const Node& other);
+    ~Node();
     
     //Connection Constructor
     Node(int edgeNum);

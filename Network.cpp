@@ -11,32 +11,15 @@
 /**
     * DEFAULT CONSTRUCTOR
     * 
-    * @post: initializes a default network, with 2 layers each consisting of a vector of one node
-    *        Node values are default
+    * @post: initializes a default network
 */
 Network::Network(){
-    // initialize a 2D vector of nodes
-    std::vector<std::vector<Node>> layers; 
-
-    // a default Network has 2 layers, each with 1 vector of nodes containing 1 node
-    // iterate 2 times 
-    for (int i = 0; i < 2; i++){
-        // initialize a vector of nodes
-        std::vector<Node> nodes;
-
-        // initialize a node
-        Node new_node;
-
-        // add node to node vector
-        nodes.push_back(new_node);
-
-        // add node vector to layers vector
-        layers.push_back(nodes);
-    }
+    //Initialize the 2D vector of nodes
+    layers_ = {};
 }
 
 /**
-    * Connects the neural network
+    * PARAMETERIZED CONSTRUCTOR Connects the neural network
     *
     * The input of the array is read as an initializer_list. e.g.({1,2,3}) or vector, etc.
     * This array is then traversed, and for each element a new vector of nodes of
@@ -77,25 +60,25 @@ Network::Network(std::initializer_list<int> arr) {
 
 /**
  * COPY CONSTRUCTOR
+ *
  * @param: const reference to another network
- * @post: sets all values to another_network's values
+ * @post: sets all values to other's values
 */
-Network::Network(const Network& another_network){ 
+Network::Network(const Network& other){ 
     // initialize a 2D vector of nodes  
     std::vector<std::vector<Node>> layers;
 
-    // for every element (layer/vector of nodes) in another_network layer, iterate through the vector of nodes
+    // for every element (layer/vector of nodes) in other layer, iterate through the vector of nodes
     // use a parameterized constructor to create a node with the same value, bias, and edge
-    for(int i = 0; i < another_network.layers_.size(); i++) {
+    for(int i = 0; i < other.layers_.size(); i++) {
         // initialize a vector of nodes
         std::vector<Node> nodes;
 
-        // iterate through every node in another_network layer
-        for(int j = 0; j < another_network.layers_[i].size(); j++) {
-            // construct a new node using the values in another_network node
-            Node add_node(another_network.layers_[i][j].getValue(), 
-                another_network.layers_[i][j].getBias(),
-                another_network.layers_[i][j].getEdges());
+        // iterate through every node in other layer
+        for(int j = 0; j < other.layers_[i].size(); j++) {
+
+            // construct a new node using the values in other node
+            Node add_node(other.layers_[i][j].getValue(), other.layers_[i][j].getBias(), other.layers_[i][j].getEdges());
 
             // add node to nodes vector
             nodes.push_back(add_node);
@@ -111,26 +94,27 @@ Network::Network(const Network& another_network){
 
 /**
  * COPY ASSIGNMENT OPERATOR
+ *
  * @param: const reference to another network
- * @post: assigns all values to another_network's values
+ * @post: assigns all values to other's values
  * @return: this network
 */
-Network& Network::operator=(const Network& another_network){
+Network& Network::operator=(const Network& other){
     // initialize a 2D vector of nodes  
     std::vector<std::vector<Node>> layers;
 
-    // for every element (layer/vector of nodes) in another_network layer, iterate through the vector of nodes
+    // for every element (layer/vector of nodes) in other layer, iterate through the vector of nodes
     // use a parameterized constructor to create a node with the same value, bias, and edge
-    for(int i = 0; i < another_network.layers_.size(); i++) {
+    for(int i = 0; i < other.layers_.size(); i++) {
         // initialize a vector of nodes
         std::vector<Node> nodes;
 
-        // iterate through every node in another_network layer
-        for(int j = 0; j < another_network.layers_[i].size(); j++) {
-            // construct a new node using the values in another_network node
-            Node add_node(another_network.layers_[i][j].getValue(), 
-                another_network.layers_[i][j].getBias(),
-                another_network.layers_[i][j].getEdges());
+        // iterate through every node in other layer
+        for(int j = 0; j < other.layers_[i].size(); j++) {
+            // construct a new node using the values in other node
+            Node add_node(other.layers_[i][j].getValue(), 
+                other.layers_[i][j].getBias(),
+                other.layers_[i][j].getEdges());
 
             // add node to nodes vector
             nodes.push_back(add_node);
@@ -144,6 +128,11 @@ Network& Network::operator=(const Network& another_network){
     layers_ = layers;
     return *this;
 }
+
+/*
+    * DESTRUCTOR
+*/
+Network::~Network(){}
 
 /**
     * ACCESSOR METHODS
@@ -428,5 +417,120 @@ void Network::printNetwork() const {
     for (int i = 0; i < layers_.size(); i++) {
         std::cout << "\n\nLayer: " << i << " Size: " << layers_[i].size() << std::endl;
         printLayer(i);
+    }
+}
+
+/**
+    * FILE METHODS
+*/
+/**
+    * Reads a network from a JSON file
+    *
+    * Every line is read for value, bias, and weights, which are assigned to a node.
+    * After weights have been read, the node is pushed to a vector that represents a
+    * single layer. (readLayer) If the end of a node array in the JSON is reached, the
+    * layer is pushed to the actual Network layers_ private member, and the readLayer
+    * is cleared in preparation to read a new set of nodes.
+    *
+    * @param file The file to read from
+*/
+void Network::readFile(std::ifstream & file) {
+    //Clear layers_
+    layers_.clear();
+
+    //Initialzing node to read data into
+    Node readNode;
+
+    //Initializing layer to read nodes into
+    std::vector<Node> readLayer;
+
+    //Counter to keep track of when a node is being read or not
+    int nodeLine = 0;
+
+    //Reading each line in the file
+    std::string line;
+    while (getline(file, line)) {
+
+        //Information representing the substrings that hold the data's length
+        int dataB, dataE, subLen;
+
+        //If the line holds a value
+        if (line.find("value") != std::string::npos) {
+            //Find the beginning of the relevant data
+            dataB = line.find(": ");
+            dataB += 2;//bringing index up to where the data is
+
+            //Find the end of the relevant data
+            dataE = line.find(",");
+
+            //Find the length of the substring that holds the data
+            subLen = dataE - dataB;
+
+            //Set the node's value to the double in that substr
+            readNode.setValue(stod(line.substr(dataB, subLen)));
+
+        //If the line holds a bias
+        } else if (line.find("bias") != std::string::npos) {
+            //Find the beginning of the relevant data
+            dataB = line.find(": ");
+            dataB += 2;//bringing index up to where the data is
+
+            //Find the end of the relevant data
+            dataE = line.find(",");
+
+            //Find the length of the substring that holds the data
+            subLen = dataE - dataB;
+
+            //Set the node's value to the double in that substr
+            readNode.setBias(stod(line.substr(dataB, subLen)));
+
+        //If the line holds the edges
+        } else if (line.find("edges") != std::string::npos) {
+            //Initializing the vector of doubles that will be set to the node's edges_
+            std::vector<double> readEdges;
+
+            //Find the beginning and end of the first item in the array
+            dataB = line.find(": ");
+            dataB += 3;//add 3 for ": ["
+            dataE = line.find(",");
+
+            //Find the length of the substring that holds the data
+            subLen = dataE - dataB;
+
+            readEdges.push_back(stod(line.substr(dataB, subLen)));
+
+            //Move the substring onto the next item
+            line = line.substr(dataE + 1);
+
+            while (line.size() > 1) {
+                //Find the end of the relevant data
+                dataE = line.find(",");
+
+                //If there are no more commas, take the closing bracket
+                if (dataE == std::string::npos) {
+                    dataE = line.find("]");
+                }
+
+                //If the JSON edge array has spaces after the , (1, dataE - 1), if not (0, dataE)
+                readEdges.push_back(stod(line.substr(1, dataE - 1)));
+
+                //Move the substring onto the next item
+                line = line.substr(dataE + 1);
+            }
+
+            //Once edges have been read, set the node's edges
+            readNode.setEdges(readEdges);
+
+            //Once the node is ready, push the node to the vector of nodes
+            readLayer.push_back(readNode);
+        
+        //If the line holds nothing but the close bracket, it signifies an arry of nodes has been read
+        } else if (line.find("        ]") != std::string::npos) {
+            //Push the layer to network layers_
+            layers_.push_back(readLayer);
+
+            //Clear readLayer for next parse
+            readLayer.clear();
+        }
     }
 }

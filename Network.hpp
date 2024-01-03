@@ -9,6 +9,7 @@
 #include <vector>
 #include <initializer_list>
 #include <algorithm>
+#include <fstream>
 #include "Node.hpp"
 
 class Network{
@@ -36,12 +37,17 @@ public:
     /**
         COPY CONSTRUCTOR
     */
-    Network(const Network& another_network);
+    Network(const Network& other);
 
     /**
         COPY ASSIGNMENT OPERATOR
     */
-    Network& operator=(const Network& another_network);
+    Network& operator=(const Network& other);
+
+    /**
+        DESTRUCTOR
+    */
+    ~Network();
 
     /**
         ACCESSOR METHODS
@@ -108,6 +114,14 @@ public:
         * Print the entire network
     */
     void printNetwork() const;
+
+    /**
+        * FILE METHODS
+    */
+    /**
+        * Reads a neural network from JSON
+    */
+    void readFile(std::ifstream & file);
 };
 
 #include "Network.cpp"
