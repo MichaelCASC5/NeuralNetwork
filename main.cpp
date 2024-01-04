@@ -3,11 +3,17 @@
 #include "TicTacToe.hpp"
 
 Network tournament(Network & network, int child) {
+    //Test vector
+    // std::vector<double> input = {0, 1, 2, 3, 4, 5, 6, 7, 8};
     std::vector<Network> population;
 
     for (int i = 0; i < child; i++) {
         Network copy = network;
-        copy.mutate(0.01);
+
+        //Don't mutate parent
+        // if (i > 0) {
+            copy.mutate(0.1);
+        // }
 
         population.push_back(copy);
     }
@@ -19,7 +25,12 @@ Network tournament(Network & network, int child) {
             Network * net1 = &population[i];
             Network * net2 = &population[i + (population.size() / 2)];
 
+            //Test vectors
+            // std::vector<double> output1 = net1->forwardPropagation(input);
+            // std::vector<double> output2 = net2->forwardPropagation(input);
             if (!board.play(*net1, *net2)) {
+
+            // if (output1[2] < output2[2]) {
                 std::swap(*net1, *net2);
             }
         }
@@ -33,20 +44,20 @@ Network tournament(Network & network, int child) {
 }
 
 int main() {
-    //Use this upper section to train the network (there's a problem with reading files over 10k generations?)
+    //Use this upper section to train the network (there's a problem with reading files?)
 
-    // Network network = {9, 11, 9};
-    // // network.readFile("network.json");
+    Network network = {9, 11, 9};
+    // network.readFile("network.json");
 
-    // for (int i = 0; i < 10000; i++) {
-    //     network = tournament(network, 32);
+    for (int i = 0; i < 100; i++) {
+        network = tournament(network, 1024);
 
-    //     if (i % 100 == 0) {
-    //         std::cout << i << std::endl;
-    //     }
-    // }
+        if (i % 1 == 0) {
+            std::cout << i << std::endl;
+        }
+    }
     
-    // network.writeFile("network.json");
+    network.writeFile("network.json");
 
     /*
         * ==== ==== ==== ==== *
@@ -54,11 +65,11 @@ int main() {
 
     //Use this lower section to play against the network
 
-    Network network;
-    network.readFile("network.json");
+    // Network network;
+    // network.readFile("network.json");
 
-    TicTacToe board;
-    std::cout << board.onePlayerGame(network) << std::endl;
+    // TicTacToe board;
+    // std::cout << board.onePlayerGame(network) << std::endl;
 
 
 

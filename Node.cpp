@@ -145,6 +145,17 @@ void Node::setEdges(std::vector<double> edges) {
     * NEURON METHODS
 */
 /**
+    * LINEAR activation function
+    * 
+    * Accepts an input and assigns the value_ to the input
+    *
+    * @param d A double of the supposed input to activate the node
+*/
+void Node::linear(double d) {
+    value_ = d;
+}
+
+/**
     * RELU activation function
     *
     * Accepts an input and assigns the value_ to the maximum of
@@ -154,8 +165,20 @@ void Node::setEdges(std::vector<double> edges) {
     *
     * @param d A double of the supposed input to activate the node
 */
-void Node::RELU(double d) {
+void Node::ReLU(double d) {
     value_ = std::max(0.0, d);
+}
+
+/**
+    * LEAKY RELU activation function
+    *
+    * Accepts an input and assigns the value_ to the maximum of
+    * either zero or the input times a small linear component, e.g., max(0.01*input, input)
+    *
+    * @param d A double of the supposed input to activate the node
+*/
+void Node::LeakyReLU(double d) {
+    value_ = std::max(0.001 * d, d);
 }
 
 /**

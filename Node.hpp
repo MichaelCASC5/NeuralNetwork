@@ -36,7 +36,9 @@ public:
     void setEdges(std::vector<double> edges);
 
     //Neuron methods
-    void RELU(double d);
+    void linear(double d);
+    void ReLU(double d);
+    void LeakyReLU(double d);
     void mutate(double threshold);
 
     //Print

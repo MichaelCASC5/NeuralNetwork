@@ -245,7 +245,7 @@ void Network::forwardPassLayer(int layerNum) {
     for (int i = 0; i < layers_[layerNum].size(); i++) {
 
         //E wi xi   or  y = mx + b
-        layers_[layerNum][i].RELU(getDotProduct(layerNum-1, i) + layers_[layerNum][i].getBias());
+        layers_[layerNum][i].LeakyReLU(getDotProduct(layerNum-1, i) + layers_[layerNum][i].getBias());
     }
 }
 
@@ -540,6 +540,9 @@ void Network::readFile(std::string fileName) {
 
             //Once the node is ready, push the node to the vector of nodes
             readLayer.push_back(readNode);
+
+            //Clear node for next parse
+            readNode = Node();
             
         //If the line holds nothing but the close bracket, it signifies an arry of nodes has been read
         } else if (line.find("        ]") != std::string::npos) {
