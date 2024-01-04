@@ -358,6 +358,7 @@ std::vector<double> Network::forwardPropagation(std::vector<double> input) {
     //For every layer ahead of the output, do a forward pass. Time complexity O(N^3)
     for(int i = 1; i < size; i++) {
         forwardPassLayer(i);
+        minmaxnormalize(i);
     }
 
     //Return the softmaxed values of all the nodes of the output layer as a vector of doubles

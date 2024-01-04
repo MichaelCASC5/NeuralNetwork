@@ -100,13 +100,17 @@ void TicTacToe::computerPlayerTurn(Network & network) {
     /**
         * IMPLEMENT: Choose a random space on the board if the chosen cell is occupied.
     */
+    //Generating random device to seed the RNG
+    std::random_device rd;
+    std::mt19937 gen(rd());//Mersenne Twister
+    std::uniform_real_distribution<double> dis(-1.0, 1.0);//range [-1,1)
 
     //Add one to the computer's decision if the cel is already occupied until a free cell is found. 
     while (available_spaces_[computer_input] != 1) {
-        std::cerr << computer_input << " is invalid input +1= ";
-        computer_input = (computer_input + 1) % 9;
+        // std::cerr << computer_input << " is invalid input +1= ";
+        computer_input = dis(gen) * 10;
     }
-    std::cout << "\n";
+    // std::cout << "\n";
 
     // sets the chosen space to 0, marking that it is not available
     available_spaces_[computer_input] = 0;
@@ -278,10 +282,10 @@ bool TicTacToe::onePlayerGame(Network & network) {
 
         //Displays board and lets the player move
         if (is_player_one_turn) {
+            computerPlayerTurn(network);
+        } else {
             displayBoard();
             humanPlayerTurn();
-        } else {
-            computerPlayerTurn(network);
         }
 
         //Win conditions
@@ -336,7 +340,7 @@ bool TicTacToe::play(Network & network1, Network & network2) {
         }
 
         //Displays board
-        displayBoard();
+        // displayBoard();
 
         //Win conditions
         if (checkThreeInRow()) {

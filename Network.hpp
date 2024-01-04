@@ -10,6 +10,7 @@
 #include <initializer_list>
 #include <algorithm>
 #include <fstream>
+#include <random>
 #include "Node.hpp"
 
 class Network{
