@@ -1,16 +1,18 @@
 #include <iostream>
-#include <fstream>
 #include "Network.hpp"
 #include "TicTacToe.hpp"
 
 int main() {
-    std::ifstream file("network.json");
-    
-    Network network = {1, 1, 1};
-    network.printNetwork();
-    network.readFile(file);
+    Network network;
+
+    network.readFile("output.json");
 
     network.printNetwork();
     
+    std::vector<double> input = {1920, 1080};
+    std::vector<double> output = network.forwardPropagation(input);
+
+    network.printNetwork();
+
     return 0;
 }

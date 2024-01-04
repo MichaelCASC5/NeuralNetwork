@@ -434,7 +434,11 @@ void Network::printNetwork() const {
     *
     * @param file The file to read from
 */
-void Network::readFile(std::ifstream & file) {
+void Network::readFile(std::string fileName) {
+
+    //Loads file
+    std::ifstream file(fileName);
+
     //Clear layers_
     layers_.clear();
 
@@ -486,6 +490,7 @@ void Network::readFile(std::ifstream & file) {
 
         //If the line holds the edges
         } else if (line.find("edges") != std::string::npos) {
+            
             //Initializing the vector of doubles that will be set to the node's edges_
             std::vector<double> readEdges;
 
@@ -494,15 +499,26 @@ void Network::readFile(std::ifstream & file) {
             dataB += 3;//add 3 for ": ["
             dataE = line.find(",");
 
+            //If there are no commas, take the closing bracket (might be one element)
+            if (dataE == std::string::npos) {
+                dataE = line.find("]");
+            }
+
             //Find the length of the substring that holds the data
             subLen = dataE - dataB;
 
-            readEdges.push_back(stod(line.substr(dataB, subLen)));
+            //Only add the edge weight if there is a value there
+            if(line.substr(dataB, subLen).size() > 0) {
+
+                //Push the edge weight to the vector that is storing the node's weights
+                readEdges.push_back(stod(line.substr(dataB, subLen)));
+            }
 
             //Move the substring onto the next item
             line = line.substr(dataE + 1);
-
+            
             while (line.size() > 1) {
+
                 //Find the end of the relevant data
                 dataE = line.find(",");
 
@@ -523,9 +539,10 @@ void Network::readFile(std::ifstream & file) {
 
             //Once the node is ready, push the node to the vector of nodes
             readLayer.push_back(readNode);
-        
+            
         //If the line holds nothing but the close bracket, it signifies an arry of nodes has been read
         } else if (line.find("        ]") != std::string::npos) {
+
             //Push the layer to network layers_
             layers_.push_back(readLayer);
 
@@ -533,4 +550,78 @@ void Network::readFile(std::ifstream & file) {
             readLayer.clear();
         }
     }
+
+    //Closes file
+    file.close();
+}
+
+/**
+    * Writes a network to JSON file
+*/
+void Network::writeFile(std::string fileName) {
+    //Writes file
+    std::ofstream file(fileName);
+
+    //Open JSON braces
+    file << "{\n    \"layers_\": [\n";
+
+    //For every layer
+    for (int i = 0; i < layers_.size(); i++) {
+        //Open layer array brackets
+        file << "        [\n";
+
+        //For every node in the layer
+        for (int j = 0; j < layers_[i].size(); j++) {
+            // std::cout << layers_[i].size() << std::endl;
+
+            //Open object brace
+            file << "            {\n";
+
+            //Printing the value and bias of the node
+            file << "                \"value\": " << layers_[i][j].getValue() << ",\n";
+            file << "                \"bias\": " << layers_[i][j].getBias() << ",\n";
+
+            //Printing the edges of the node
+            file << "                \"edges\": [";
+            for (int k = 0; k < layers_[i][j].getEdges().size(); k++) {
+
+                //Put a comma after each item
+                if(k < layers_[i][j].getEdges().size() - 1) {
+                    file << layers_[i][j].getEdges()[k] << ", ";
+
+                //If this item is the last one, don't put a comma after it, rather put a bracket
+                } else {
+                    file << layers_[i][j].getEdges()[k] << "";
+                }
+            }
+
+            //Closing the edges of the node
+             file << "]\n";
+
+            //Put a comma after the brace
+            if(j < layers_[i].size() - 1) {
+                file << "            },\n";
+
+            //If this node is the last one, don't put a comma after the brace
+            } else {
+                file << "            }\n";
+            }
+        }
+
+        //Close layer array brackets
+        //Put a comma after the bracket
+        if(i < layers_.size() - 1) {
+            file << "        ],\n";
+
+        //If this layer is the last one, don't put a comma after the bracket
+        } else {
+             file << "        ]\n";
+        }
+    }
+
+    //Close JSON braces
+    file << "    ]\n}";
+
+    //Closes file
+    file.close();
 }

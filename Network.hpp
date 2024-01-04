@@ -121,7 +121,12 @@ public:
     /**
         * Reads a neural network from JSON
     */
-    void readFile(std::ifstream & file);
+    void readFile(std::string fileName);
+
+    /**
+        * Writes a neural network from JSON
+    */
+    void writeFile(std::string fileName);
 };
 
 #include "Network.cpp"
