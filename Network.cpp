@@ -138,6 +138,13 @@ Network::~Network(){}
     * ACCESSOR METHODS
 */
 /**
+    * @return the size of the 2D vector layers_
+*/
+int Network::size() const{
+    return layers_.size();
+}
+
+/**
     * @return The address to layers_ 2D vector.
 */
 std::vector<std::vector<Node>>& Network::getLayers() {
@@ -275,6 +282,7 @@ double Network::getDotProduct(int layerNum, int edge) {
 
     return dot;
 }
+
 /**
     * Returns the values of a layer as a vector of doubles
     *
@@ -287,9 +295,35 @@ double Network::getDotProduct(int layerNum, int edge) {
 */
 std::vector<double> Network::getLayerValues(int layerNum) {
     std::vector<double> output;
+
+    //Iterate through each node in the output layer, pushing each node's value to the output vector
     for (int i = 0; i < layers_[layerNum].size(); i++) {
         output.push_back(layers_[layerNum][i].getValue());
     }
+
+    return output;
+}
+
+/**
+    * Returns the values of the output layer as a vector of doubles
+    *
+    * Traverses the output layer and gets the value_ of each node within. This value
+    * is pushed into a vector of doubles, which is returned after every node
+    * has been visited.
+    *
+    * @return A vector of doubles containing the values of the output layer's nodes
+*/
+std::vector<double> Network::getOutputLayerValues() {
+    std::vector<double> output;
+
+    //Get the last layer index
+    int layerNum = layers_.size() - 1;
+
+    //Iterate through each node in the output layer, pushing each node's value to the output vector
+    for (int i = 0; i < layers_[layerNum].size(); i++) {
+        output.push_back(layers_[layerNum][i].getValue());
+    }
+
     return output;
 }
 

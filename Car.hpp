@@ -6,6 +6,7 @@
 #define CAR_HPP
 
 #include "Network.hpp"
+#include <SFML/Graphics.hpp>
 
 class Car {
 private:
@@ -14,7 +15,7 @@ private:
     Network network_;
 public:
     /**
-     * Big 5 Methods
+        * Big 5 Methods
     */
 
     // Default constructor
@@ -33,7 +34,7 @@ public:
     ~Car();
 
     /**
-     * Accessors
+        * Accessors
     */
 
     double getXPos() const;
@@ -41,16 +42,30 @@ public:
     Network getNetwork() const;
 
     /**
-     * Mutators
+        * Mutators
     */
     void setXPos(double x_pos);
     void setYPos(double y_pos);
     void setNetwork(Network network);
 
     /**
-     * Print Functions
+        * Car functions
+    */
+    void addXPos(double x_pos_add);
+    void addYPos(double y_pos_add);
+    void move();
+    void mutate(double threshold);
+
+    /**
+        * Print Functions
     */
     void printCar() const;
 
+    /**
+        * Draw Functions
+    */
+    void draw(sf::RenderTarget& target) const;
 };
+
+#include "Car.cpp"
 #endif

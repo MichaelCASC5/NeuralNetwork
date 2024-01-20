@@ -50,10 +50,22 @@ public:
     */
     ~Network();
 
+
+
     /**
         ACCESSOR METHODS
     */
+    /**
+        * Returns the size of the 2D vector layers_
+    */
+    int size() const;
+
+    /**
+        * Returns an address to layers_, which is the entire network (a 2D vector)
+    */
     std::vector<std::vector<Node>>& getLayers();
+
+
 
     /**
         NEURAL NETWORK FUNCTIONS
@@ -84,6 +96,11 @@ public:
     std::vector<double> getLayerValues(int layerNum);
 
     /**
+        * Returns the values of all the nodes of the output layer as a vector of doubles.
+    */
+    std::vector<double> getOutputLayerValues();
+
+    /**
         * Gives a softmax probability distribution of all the given layer's nodes' values as a vector of doubles.
     */
     std::vector<double> softmax(int layerNum);
@@ -103,6 +120,8 @@ public:
     */
     void mutate(double threshold);
 
+
+
     /**
         * PRINT METHODS
     */
@@ -115,6 +134,8 @@ public:
         * Print the entire network
     */
     void printNetwork() const;
+
+
 
     /**
         * FILE METHODS

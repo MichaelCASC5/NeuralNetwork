@@ -1,77 +1,143 @@
 #include <iostream>
 #include "Network.hpp"
 #include "TicTacToe.hpp"
+#include "Car.hpp"
+#include <SFML/Graphics.hpp>
 
-Network tournament(Network & network, int child) {
-    //Test vector
-    // std::vector<double> input = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-    std::vector<Network> population;
+/*
+    * PUBLIC VARS
+*/
+std::vector<Car> cars;
 
-    for (int i = 0; i < child; i++) {
-        Network copy = network;
+/*
+    * SIMULATION LOGIC
+*/
+void loop () {
+    int parentIndex = -1;
 
-        //Don't mutate parent
-        // if (i > 0) {
-            copy.mutate(0.1);
-        // }
+    //Iterate through all the cars in the vector and move them all
+    for (int i = 0; i < cars.size(); i++) {
+        cars[i].move();
 
-        population.push_back(copy);
-    }
-
-    while (population.size() > 1) {
-        for (int i = 0; i < population.size() / 2; i++) {
-            TicTacToe board;
-
-            Network * net1 = &population[i];
-            Network * net2 = &population[i + (population.size() / 2)];
-
-            //Test vectors
-            // std::vector<double> output1 = net1->forwardPropagation(input);
-            // std::vector<double> output2 = net2->forwardPropagation(input);
-            if (!board.play(*net1, *net2)) {
-
-            // if (output1[2] < output2[2]) {
-                std::swap(*net1, *net2);
-            }
+        //Check to see if a car made it to the exit
+        if(cars[i].getXPos() > 350 && cars[i].getXPos() <= 400 && cars[i].getYPos() > 350 && cars[i].getYPos() <= 400) {
+            //Save the index of the car that made it to the exit
+            parentIndex = i;
+            break;
         }
-
-        //Keeping only first half (winners) of population
-        size_t const midpoint = population.size() / 2;
-        population.erase(population.begin() + midpoint, population.end());
     }
 
-    return population[0];
+    if(parentIndex != -1) {
+        Car parent = cars[parentIndex];
+        for (int i = 0; i < cars.size(); i++) {
+            cars[i] = parent;
+            // cars[i].getNetwork().mutate(1);
+            cars[i].mutate(0.1);
+
+            cars[i].setXPos(50);
+            cars[i].setYPos(50);
+        }
+    }
+
+    // std::cout << cars.size() << std::endl;
 }
 
 int main() {
     //Use this upper section to train the network (there's a problem with reading files?)
 
-    Network network = {9, 11, 9};
-    // network.readFile("network.json");
+    // Network network = {9, 11, 9};
+    // // network.readFile("network.json");
 
-    for (int i = 0; i < 100; i++) {
-        network = tournament(network, 1024);
+    // for (int i = 0; i < 1000; i++) {
+    //     network = tournament(network, 1024);
 
-        if (i % 1 == 0) {
-            std::cout << i << std::endl;
-        }
-    }
+    //     if (i % 10 == 0) {
+    //         std::cout << i << std::endl;
+    //     }
+    // }
     
-    network.writeFile("network.json");
+    // network.writeFile("network.json");
 
     /*
         * ==== ==== ==== ==== *
     */
+    // std::vector<double> input = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    // network.forwardPropagation(input);
+    // std::vector<double> output = network.getOutputLayerValues();
+    // network.printNetwork();
+    // for (int i = 0; i < output.size(); i++) {
+    //     std::cout << output[i] << " ";
+    // }
+    // std::cout << std::endl;
+    // return 0;
 
-    //Use this lower section to play against the network
+    /*
+        * SETUP WINDOW
+    */
+    // sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML works!", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!", sf::Style::Default);
 
-    // Network network;
-    // network.readFile("network.json");
+    //Enable VSync
+    window.setVerticalSyncEnabled(true);
+    
+    //Get desktop video data
+    auto desktop = sf::VideoMode::getDesktopMode();
 
-    // TicTacToe board;
-    // std::cout << board.onePlayerGame(network) << std::endl;
+    //Display window before obtaining desktop
+    window.display();
+
+    //Short delay to allow window to be positioned properly
+    sf::sleep(sf::milliseconds(100));
+
+    //Center Screen
+    sf::Vector2i position(desktop.width/2 - window.getSize().x/2, desktop.height/2 - window.getSize().y/2);
+    window.setPosition(position);
 
 
+
+    /*
+        * SETUP SIMULATION
+    */
+    for (int i = 0; i < 500; i++) {
+        Network network = {4, 6, 5};
+        Car car(50, 50, network);
+
+        cars.push_back(car);
+    }
+
+
+
+    /*
+        * START SIMULATION ENVIRONMENT
+    */
+    while (window.isOpen()) {
+        //SFML Window
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+        }
+
+        /*
+            * PERFORM LOGIC
+        */
+        loop();
+
+        /*
+            * DRAW THE CARS
+        */
+        //Clear window
+        window.clear();
+
+        //Draw each car
+        for (int i = 0; i < cars.size(); i++) {
+            cars[i].draw(window);
+        }
+
+        //Display the window
+        window.display();
+    }
 
     return 0;
 }
