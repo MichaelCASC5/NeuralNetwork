@@ -2,12 +2,18 @@
 #include "Network.hpp"
 #include "TicTacToe.hpp"
 #include "Car.hpp"
+#include "Point.hpp"
 #include <SFML/Graphics.hpp>
 
 /*
     * PUBLIC VARS
 */
 std::vector<Car> cars;
+// std::vector<std::vector<bool>> obstacles(400, std::vector<bool>(400, false));
+std::vector<Point> obstacles;
+//Need to refractor this to points
+int start[] = {50, 50};
+int end[] = {390, 390};
 
 /*
     * SIMULATION LOGIC
@@ -20,7 +26,7 @@ void loop () {
         cars[i].move();
 
         //Check to see if a car made it to the exit
-        if(cars[i].getXPos() > 350 && cars[i].getXPos() <= 400 && cars[i].getYPos() > 350 && cars[i].getYPos() <= 400) {
+        if(cars[i].getDistanceTo(end) < 20) {
             //Save the index of the car that made it to the exit
             parentIndex = i;
             break;
@@ -31,46 +37,15 @@ void loop () {
         Car parent = cars[parentIndex];
         for (int i = 0; i < cars.size(); i++) {
             cars[i] = parent;
-            // cars[i].getNetwork().mutate(1);
             cars[i].mutate(0.1);
 
-            cars[i].setXPos(50);
-            cars[i].setYPos(50);
+            cars[i].setXPos(start[0]);
+            cars[i].setYPos(start[1]);
         }
     }
-
-    // std::cout << cars.size() << std::endl;
 }
 
 int main() {
-    //Use this upper section to train the network (there's a problem with reading files?)
-
-    // Network network = {9, 11, 9};
-    // // network.readFile("network.json");
-
-    // for (int i = 0; i < 1000; i++) {
-    //     network = tournament(network, 1024);
-
-    //     if (i % 10 == 0) {
-    //         std::cout << i << std::endl;
-    //     }
-    // }
-    
-    // network.writeFile("network.json");
-
-    /*
-        * ==== ==== ==== ==== *
-    */
-    // std::vector<double> input = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-    // network.forwardPropagation(input);
-    // std::vector<double> output = network.getOutputLayerValues();
-    // network.printNetwork();
-    // for (int i = 0; i < output.size(); i++) {
-    //     std::cout << output[i] << " ";
-    // }
-    // std::cout << std::endl;
-    // return 0;
-
     /*
         * SETUP WINDOW
     */
@@ -99,8 +74,8 @@ int main() {
         * SETUP SIMULATION
     */
     for (int i = 0; i < 500; i++) {
-        Network network = {4, 6, 5};
-        Car car(50, 50, network);
+        Network network = {2, 6, 5};
+        Car car(start[0], start[1], 0, network);
 
         cars.push_back(car);
     }
@@ -108,7 +83,7 @@ int main() {
 
 
     /*
-        * START SIMULATION ENVIRONMENT
+        * START SIMULATION ENVIRONMENT LOOP
     */
     while (window.isOpen()) {
         //SFML Window
@@ -119,20 +94,45 @@ int main() {
             }
         }
 
-        /*
+        /**
+            * MOUSE INPUT
+        */
+        sf::CircleShape cursor(10.f);
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+            //Set the color of the circle
+            cursor.setFillColor(sf::Color::Green);
+
+            //Set the position of the circle
+            cursor.setPosition(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+            //Creating obstacle
+            Point obstacle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y));
+            obstacles.push_back(obstacle);
+        }
+
+        /**
             * PERFORM LOGIC
         */
         loop();
 
-        /*
-            * DRAW THE CARS
+        /**
+            * DRAW
         */
         //Clear window
         window.clear();
 
+        //Draw obstacles
+        for (int i = 0; i < obstacles.size(); i++) {
+            obstacles[i].draw(window);
+        }
+        window.draw(cursor);
+
         //Draw each car
         for (int i = 0; i < cars.size(); i++) {
             cars[i].draw(window);
+            // cars[i].radar(0, obstacles, window);
         }
 
         //Display the window

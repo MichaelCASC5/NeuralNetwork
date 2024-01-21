@@ -2,20 +2,23 @@
  * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
 */
 
+#define PI 3.1415926535897932384626433832795
+
 /**
  * Big 5 Methods
 */
 
 // Default constructor
-Car::Car():x_pos_(0), y_pos_(0){
+Car::Car():x_pos_(0), y_pos_(0), angle_(0){
     Network network;
     network_ = network;
 }
 
 // Parameterized constructor
-Car::Car(double x_pos, double y_pos, Network network){
+Car::Car(double x_pos, double y_pos, double angle, Network network){
     x_pos_ = x_pos;
     y_pos_ = y_pos;
+    angle_ = angle;
     network_ = network;
 }
 
@@ -23,6 +26,7 @@ Car::Car(double x_pos, double y_pos, Network network){
 Car::Car(const Car& another_car){
     x_pos_ = another_car.x_pos_;
     y_pos_ = another_car.y_pos_;
+    angle_ = another_car.angle_;
     network_ = another_car.network_;
 }
 
@@ -30,14 +34,13 @@ Car::Car(const Car& another_car){
 Car& Car::operator=(const Car& another_car){
     x_pos_ = another_car.x_pos_;
     y_pos_ = another_car.y_pos_;
+    angle_ = another_car.angle_;
     network_ = another_car.network_;
     return *this;
 }
 
 // Destructor
-Car::~Car(){
-
-}
+Car::~Car(){}
 
 /**
  * Accessors
@@ -49,6 +52,10 @@ double Car::getXPos() const {
 
 double Car::getYPos() const{
     return y_pos_;
+}
+
+double Car::getAngle() const{
+    return angle_;
 }
 
 Network Car::getNetwork() const{
@@ -67,6 +74,10 @@ void Car::setYPos(double y_pos){
     y_pos_ = y_pos;
 }
 
+void Car::setAngle(double angle){
+    angle_ = angle;
+}
+
 void Car::setNetwork(Network network){
     network_ = network;
 }
@@ -83,7 +94,7 @@ void Car::addYPos(double y_pos_add) {
 }
 
 void Car::move() {
-    std::vector<double> input = {0, 0, 0, 0};
+    std::vector<double> input = {0, 0};
     network_.forwardPropagation(input);
     std::vector<double> output = network_.getOutputLayerValues();
 
@@ -104,6 +115,23 @@ void Car::mutate(double threshold) {
     network_.mutate(threshold);
 }
 
+double Car::getDistanceTo(int point[]) const {
+    return sqrt(pow(point[0] - x_pos_, 2) + pow(point[1] - y_pos_, 2));
+}
+
+// void Car::radar(double angle, std::vector<Point> obstacles, sf::RenderTarget& window) {
+//     int length = 0;
+//     int radarX = x_pos_;
+//     int radarY = y_pos_;
+
+//     while (checkObstacle(radarX, radarY, obstacles) && length < 200) {
+//         length++;
+
+//         radarX = (int)(x_pos_ + cos((PI/180) * angle) * length);
+//         radarY = (int)(y_pos_ + sin((PI/180) * angle) * length);
+//     }
+// }
+
 /**
  * Print Functions
 */
@@ -121,7 +149,7 @@ void Car::printCar() const {
 */
 void Car::draw(sf::RenderTarget& window) const {
     //Set the diameter of the circle
-    sf::CircleShape shape(10.f);
+    sf::RectangleShape shape(sf::Vector2f(20.f, 10.f));
 
     //Set the color of the circle
     shape.setFillColor(sf::Color::Blue);
@@ -129,6 +157,9 @@ void Car::draw(sf::RenderTarget& window) const {
     //Set the position of the circle
     sf::Vector2f position = {(float) x_pos_, (float) y_pos_};
     shape.setPosition(position);
+
+    //Rotate
+    shape.rotate((float) angle_);
 
     //Draw the circle to the target window
     window.draw(shape);

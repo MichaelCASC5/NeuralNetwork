@@ -6,12 +6,15 @@
 #define CAR_HPP
 
 #include "Network.hpp"
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 class Car {
 private:
     double x_pos_;
     double y_pos_;
+    double angle_;
+
     Network network_;
 public:
     /**
@@ -22,7 +25,7 @@ public:
     Car();
 
     // Parameterized constructor
-    Car(double x_pos, double y_pos, Network network);
+    Car(double x_pos, double y_pos, double angle, Network network);
 
     // Copy constructor
     Car(const Car& another_car);
@@ -39,6 +42,7 @@ public:
 
     double getXPos() const;
     double getYPos() const;
+    double getAngle() const;
     Network getNetwork() const;
 
     /**
@@ -46,6 +50,7 @@ public:
     */
     void setXPos(double x_pos);
     void setYPos(double y_pos);
+    void setAngle(double angle);
     void setNetwork(Network network);
 
     /**
@@ -55,6 +60,8 @@ public:
     void addYPos(double y_pos_add);
     void move();
     void mutate(double threshold);
+    double getDistanceTo(int point[]) const;
+    // void radar(double angle);
 
     /**
         * Print Functions
@@ -64,7 +71,7 @@ public:
     /**
         * Draw Functions
     */
-    void draw(sf::RenderTarget& target) const;
+    void draw(sf::RenderTarget& window) const;
 };
 
 #include "Car.cpp"
