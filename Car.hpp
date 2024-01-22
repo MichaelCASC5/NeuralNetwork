@@ -6,6 +6,7 @@
 #define CAR_HPP
 
 #include "Network.hpp"
+#include "Point.hpp"
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
@@ -14,6 +15,9 @@ private:
     double x_pos_;
     double y_pos_;
     double angle_;
+    double velocity_;
+
+    bool active_;
 
     Network network_;
 public:
@@ -25,7 +29,7 @@ public:
     Car();
 
     // Parameterized constructor
-    Car(double x_pos, double y_pos, double angle, Network network);
+    Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network);
 
     // Copy constructor
     Car(const Car& another_car);
@@ -43,6 +47,8 @@ public:
     double getXPos() const;
     double getYPos() const;
     double getAngle() const;
+    double getVelocity() const;
+    bool getActive() const;
     Network getNetwork() const;
 
     /**
@@ -51,6 +57,8 @@ public:
     void setXPos(double x_pos);
     void setYPos(double y_pos);
     void setAngle(double angle);
+    void setVelocity(double velocity);
+    void setActive(bool active);
     void setNetwork(Network network);
 
     /**
@@ -58,10 +66,12 @@ public:
     */
     void addXPos(double x_pos_add);
     void addYPos(double y_pos_add);
-    void move();
+    void move(std::vector<Point> obstacles, sf::RenderTarget& window);
     void mutate(double threshold);
     double getDistanceTo(int point[]) const;
-    // void radar(double angle);
+    bool checkObstacle(int radarX, int radarY, std::vector<Point> obstacles);
+    double radar(double angle, std::vector<Point> obstacles, sf::RenderTarget& window);
+    void reset(int point[]);
 
     /**
         * Print Functions
