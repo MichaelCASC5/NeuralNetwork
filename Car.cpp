@@ -186,7 +186,7 @@ double Car::radar(double radarAngle, std::vector<Point> obstacles, sf::RenderTar
     double radarY = y_pos_;
 
     while (!checkObstacle(radarX, radarY, obstacles) && length < 100) {
-        length++;
+        length += 10;
 
         radarX = (int)(x_pos_ + cos((PI/180) * (radarAngle + angle_)) * length);
         radarY = (int)(y_pos_ + sin((PI/180) * (radarAngle + angle_)) * length);
@@ -194,18 +194,20 @@ double Car::radar(double radarAngle, std::vector<Point> obstacles, sf::RenderTar
         /**
             * Draw radar for testing purposes
         */
-        //Set the diameter of the circle
-        // sf::CircleShape shape(1.f);
+        if (0) {
+            //Set the diameter of the circle
+            sf::CircleShape shape(1.f);
 
-        // //Set the color of the circle
-        // shape.setFillColor(sf::Color::White);
+            //Set the color of the circle
+            shape.setFillColor(sf::Color::White);
 
-        // //Set the position of the circle
-        // sf::Vector2f position = {(float) radarX, (float) radarY};
-        // shape.setPosition(position);
+            //Set the position of the circle
+            sf::Vector2f position = {(float) radarX, (float) radarY};
+            shape.setPosition(position);
 
-        // //Draw the circle to the target window
-        // window.draw(shape);
+            //Draw the circle to the target window
+            window.draw(shape);
+        }
     }
 
     //If the car has collided with the obstacle, set active to false
@@ -218,7 +220,7 @@ double Car::radar(double radarAngle, std::vector<Point> obstacles, sf::RenderTar
 void Car::reset(int point[]) {
     x_pos_ = point[0];
     y_pos_ = point[1];
-    angle_ = 0;
+    angle_ = 45;
     velocity_ = 0;
     active_ = 1;
 }

@@ -80,7 +80,7 @@ void loop (T & startTimer, sf::RenderTarget& window) {
 
             //Don't mutate parent
             if (i > 0) {
-                cars[i].mutate(0.1);
+                cars[i].mutate(1);
             }
 
             // cars[i].setXPos(start[0]);
@@ -95,8 +95,8 @@ int main() {
     /*
         * SETUP WINDOW
     */
-    // sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML works!", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML works!", sf::Style::Fullscreen);
+    // sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!", sf::Style::Default);
 
     //Enable VSync
     window.setVerticalSyncEnabled(true);
@@ -119,9 +119,9 @@ int main() {
     /*
         * SETUP SIMULATION
     */
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 1000; i++) {
         Network network = {5, 6, 4};
-        Car car(start[0], start[1], 0, 0, 1, network);
+        Car car(start[0], start[1], 45, 0, 1, network);
 
         cars.push_back(car);
     }
@@ -139,6 +139,8 @@ int main() {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                window.close();
+            } else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
                 window.close();
             }
         }
@@ -181,7 +183,7 @@ int main() {
         window.draw(cursor);
 
         //Draw each car
-        for (int i = 0; i < cars.size(); i++) {
+        for (int i = 0; i < 1; i++) {
             cars[i].draw(window);
             // cars[i].radar(0, obstacles, window);
         }
