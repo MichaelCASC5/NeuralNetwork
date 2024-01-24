@@ -183,7 +183,7 @@ int main() {
         window.draw(cursor);
 
         //Draw each car
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < cars.size(); i++) {
             cars[i].draw(window);
             // cars[i].radar(0, obstacles, window);
         }
