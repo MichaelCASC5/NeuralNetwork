@@ -85,7 +85,7 @@ void loop (T & startTimer, sf::RenderTarget& window) {
 
             //Don't mutate parent
             if (i > 0) {
-                cars[i].mutate(0.1);
+                cars[i].mutate(1);
             }
 
             // cars[i].setXPos(start[0]);
