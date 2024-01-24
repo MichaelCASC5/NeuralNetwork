@@ -17,6 +17,9 @@ bool obs[20][20];
 int start[] = {50, 50};
 int end[] = {390, 390};
 
+//Generation counter
+int generation = 0;
+
 /*
     * SIMULATION LOGIC
 */
@@ -85,7 +88,20 @@ void loop (T & startTimer, sf::RenderTarget& window) {
 
             //Don't mutate parent
             if (i > 0) {
-                cars[i].mutate(1);
+                //Each generation the mutation threshold lowers
+                double threshold = 1 * pow(0.9, generation);
+
+                //Threshold limit
+                if (threshold < 0.1) {
+                    threshold = 0.1;
+                }
+
+                //Mutate generationally only a certain proportion of the cars, the rest undergo more severe mutation
+                if (i < (int)(cars.size() * 0.95)) {
+                    cars[i].mutate(threshold);
+                } else {
+                    cars[i].mutate(1);
+                }
             }
 
             // cars[i].setXPos(start[0]);
@@ -93,6 +109,7 @@ void loop (T & startTimer, sf::RenderTarget& window) {
             cars[i].reset(start);
             startTimer = std::chrono::steady_clock::now();
         }
+        generation++;
     }
 }
 
