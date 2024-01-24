@@ -12,6 +12,7 @@
 std::vector<Car> cars;
 // std::vector<std::vector<bool>> obstacles(400, std::vector<bool>(400, false));
 std::vector<Point> obstacles;
+bool obs[20][20];
 //Need to refractor this to points
 int start[] = {50, 50};
 int end[] = {390, 390};
@@ -37,7 +38,7 @@ void loop (T & startTimer, sf::RenderTarget& window) {
 
     //Iterate through all the cars in the vector and move them all
     for (int i = 0; i < cars.size(); i++) {
-        cars[i].move(obstacles, window);
+        cars[i].move(obs, window);
 
         //If the car is inactive, add one to the inactive cars counter
         if (!cars[i].getActive()) {
@@ -53,15 +54,19 @@ void loop (T & startTimer, sf::RenderTarget& window) {
     }
 
     //Check if all the cars in the vector are inactive
-    if (inactiveCount == cars.size() || duration > 20000) {
+    if (inactiveCount == cars.size() || duration > 10000) {
         // std::cout << "ALL INACTIVE" << std::endl;
+        if (duration > 20000) {
+            std::cout << "TIME UP" << std::endl;
+        }
         
-        int saveShortest = cars[0].getDistanceTo(end);;
+        double saveShortest = cars[0].getDistanceTo(end);
+        parentIndex = 0;
 
-        //If all cars are inactive, find which one is closer to the finish
+        //If all cars are inactive or time is up, find which one is closer to the finish
         for (int i = 1; i < cars.size(); i++) {
             //Calculate distance to the finish
-            int dist = cars[i].getDistanceTo(end);
+            double dist = cars[i].getDistanceTo(end);
 
             //If the distance is shorter than the shortest recorded thus far, save it
             if (dist < saveShortest) {
@@ -80,7 +85,7 @@ void loop (T & startTimer, sf::RenderTarget& window) {
 
             //Don't mutate parent
             if (i > 0) {
-                cars[i].mutate(1);
+                cars[i].mutate(0.1);
             }
 
             // cars[i].setXPos(start[0]);
@@ -95,8 +100,8 @@ int main() {
     /*
         * SETUP WINDOW
     */
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML works!", sf::Style::Fullscreen);
-    // sf::RenderWindow window(sf::VideoMode(400, 400), "SFML works!", sf::Style::Default);
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Neural Network", sf::Style::Fullscreen);
+    // sf::RenderWindow window(sf::VideoMode(400, 400), "Neural Network", sf::Style::Default);
 
     //Enable VSync
     window.setVerticalSyncEnabled(true);
@@ -160,7 +165,9 @@ int main() {
 
             //Creating obstacle
             Point obstacle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y));
-            obstacles.push_back(obstacle);
+            // obstacles.push_back(obstacle);
+            obs[static_cast<int>(mousePos.x) / 20][static_cast<int>(mousePos.y) / 20] = 1;
+            // std::cout << static_cast<int>(mousePos.x) << ", " << static_cast<int>(mousePos.y) << std::endl;
         }
 
         /**
@@ -174,18 +181,34 @@ int main() {
         //Clear window
         window.clear();
 
-        loop(startTimer, window);
-
         //Draw obstacles
-        for (int i = 0; i < obstacles.size(); i++) {
-            obstacles[i].draw(window);
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                // obstacles[i].draw(window);
+
+                if (obs[i][j]) {
+                    //Set the diameter of the circle
+                    sf::CircleShape shape(10.f);
+
+                    //Set the color of the circle
+                    shape.setFillColor(sf::Color::Red);
+
+                    //Set the position of the circle
+                    sf::Vector2f position = {(float) (i * 20), (float) (j * 20)};
+                    shape.setPosition(position);
+
+                    //Draw the circle to the target window
+                    window.draw(shape);
+                }
+            }
         }
         window.draw(cursor);
+
+        loop(startTimer, window);
 
         //Draw each car
         for (int i = 0; i < cars.size(); i++) {
             cars[i].draw(window);
-            // cars[i].radar(0, obstacles, window);
         }
 
         //Display the window
