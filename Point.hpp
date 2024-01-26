@@ -12,6 +12,7 @@ class Point {
 private:
     int x_pos_;
     int y_pos_;
+    int diameter_;
 public:
     // Default constructor
     Point();

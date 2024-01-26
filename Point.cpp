@@ -40,13 +40,13 @@ int Point::getYPos() const{
 */
 void Point::draw(sf::RenderTarget& window) const {
     //Set the diameter of the circle
-    sf::CircleShape shape(2.f);
+    sf::CircleShape shape(10.f);
 
     //Set the color of the circle
     shape.setFillColor(sf::Color::Red);
 
     //Set the position of the circle
-    sf::Vector2f position = {(float) x_pos_, (float) y_pos_};
+    sf::Vector2f position = {(float) (x_pos_ - 5), (float) (y_pos_ - 5)};
     shape.setPosition(position);
 
     //Draw the circle to the target window
