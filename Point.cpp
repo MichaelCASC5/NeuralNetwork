@@ -1,7 +1,31 @@
+/**
+ * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
+*/
+
+// Default constructor
+Point::Point(): x_pos_(0), y_pos_(0){}
+
+// Parameterized constructor
 Point::Point(int x_pos, int y_pos) {
     x_pos_ = x_pos;
     y_pos_ = y_pos;
 }
+
+// Copy constructor
+Point::Point(const Point& point){
+    x_pos_ = point.x_pos_;
+    y_pos_ = point.y_pos_;
+}
+
+// Copy assignment
+Point& Point::operator=(const Point& point){
+    x_pos_ = point.x_pos_;
+    y_pos_ = point.y_pos_;
+    return *this;
+}
+
+// Destructor
+Point::~Point(){}
 
 int Point::getXPos() const {
     return x_pos_;

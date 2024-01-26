@@ -9,7 +9,7 @@
 */
 
 // Default constructor
-Car::Car():x_pos_(0), y_pos_(0), angle_(0){
+Car::Car():x_pos_(0.0), y_pos_(0.0), angle_(0.0){
     Network network;
     network_ = network;
 }

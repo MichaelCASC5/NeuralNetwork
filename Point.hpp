@@ -13,9 +13,17 @@ private:
     int x_pos_;
     int y_pos_;
 public:
+    // Default constructor
+    Point();
     // Parameterized constructor
     Point(int x_pos, int y_pos);
-
+    // Copy constructor
+    Point(const Point& point);
+    // Copy assignment
+    Point& operator=(const Point& point);
+    // Destructor
+    ~Point();
+    
     /**
         * Accessors
     */
