@@ -1,6 +1,2 @@
-﻿  Car.cpp
-C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\CarSimulation\Car.cpp(198,35): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\CarSimulation\Car.cpp(198,27): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Point.cpp
-  Generating Code...
+﻿  CarSim.cpp
   CarSimulation.vcxproj -> C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\x64\Debug\CarSimulation.lib
