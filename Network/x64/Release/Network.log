@@ -1,0 +1,22 @@
+﻿  Network.cpp
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(35,17): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(144,24): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(170,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(322,18): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(347,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(386,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(493,12): error C3861: 'getline': identifier not found
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(501,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(505,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(511,31): error C3861: 'stod': identifier not found
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(517,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(521,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(527,30): error C3861: 'stod': identifier not found
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(537,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(539,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(543,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(553,37): error C3861: 'stod': identifier not found
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(562,34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(566,38): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\Network\Network.cpp(570,37): error C3861: 'stod': identifier not found
+  Node.cpp

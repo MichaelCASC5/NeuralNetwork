@@ -1,0 +1,4 @@
+﻿  main.cpp
+main.obj : error LNK2001: unresolved external symbol "public: __cdecl Network::~Network(void)" (??1Network@@QEAA@XZ)
+main.obj : error LNK2001: unresolved external symbol "public: __cdecl Network::Network(class std::initializer_list<int>)" (??0Network@@QEAA@V?$initializer_list@H@std@@@Z)
+C:\Users\micha\Documents\Programming Projects\C++\NeuralNetworkVSC\x64\Release\NeuralNetworkVSC.exe : fatal error LNK1120: 2 unresolved externals
