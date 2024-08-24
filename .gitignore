@@ -1,0 +1,32 @@
+# Directories
+Debug/
+Release/
+x64/
+bin/
+obj/
+.vscode/
+.vs/
+
+# Visual Studio local files, temporary files, build results, and database files
+*.local
+*.log
+*.tlog
+*.obj
+*.pdb
+*.idb
+*.lib
+*.suo
+*.user
+*.csproj.user
+*.cache
+*.ilk
+*.aps
+*.ncb
+*.sbr
+*.opensdf
+*.sdf
+*.ipch
+*.tlog
+*.tmp
+*.rsrc
+*.res
