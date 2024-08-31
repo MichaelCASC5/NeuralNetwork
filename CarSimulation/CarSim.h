@@ -31,6 +31,21 @@ public:
 	~CarSim();
 
     /**
+     * Move cars
+     */
+    void moveCars(sf::RenderWindow& window);
+
+    /**
+     * Find closests
+     */
+    void findClosest();
+
+    /**
+     * Mutate cars
+     */
+    void mutateCars();
+
+    /**
      * Perform game logic (window is passed only for debug purposes)
      */
     void logic(sf::RenderWindow &window);
@@ -62,6 +77,7 @@ private:
 
     //Generation counter
     int generation = 0;
+    int mostFitCar;
 };
 
 #endif

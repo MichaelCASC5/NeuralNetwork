@@ -22,18 +22,12 @@ CarSim::CarSim()
 CarSim::~CarSim() {}
 
 /**
- * All simulation logic
+ * Move all cars
+ * 
+ * This also checks if a car made it to the exit. Window is only passed for radar debug
  */
-void CarSim::logic(sf::RenderWindow &window)
+void CarSim::moveCars(sf::RenderWindow& window)
 {
-    //Index of the winning car to be the parent. Set to -1 to indicate no winner
-    int parentIndex = -1;
-
-    //Count the time passed since the generation started
-    auto finishTimer = std::chrono::steady_clock::now();
-    auto numberTimer = std::chrono::duration_cast<std::chrono::milliseconds> (finishTimer - startTimer);
-    auto duration = numberTimer.count();
-
     //Iterate through all the cars in the vector and move them all
     for (int i = 0; i < cars.size(); i++) {
         cars[i].move(obs, window);
@@ -41,61 +35,90 @@ void CarSim::logic(sf::RenderWindow &window)
         //Check to see if a car made it to the exit
         if (cars[i].getDistanceTo(end) < 20) {
             //Save the index of the car that made it to the exit
-            parentIndex = i;
+            mostFitCar = i;
             break;
         }
     }
+}
 
-    //Check if all the cars in the vector are inactive
-    if (duration > 10000) {
+void CarSim::findClosest()
+{
+    double saveShortest = cars[0].getDistanceTo(end);
+    mostFitCar = 0;
 
-        double saveShortest = cars[0].getDistanceTo(end);
-        parentIndex = 0;
+    //If all cars are inactive or time is up, find which one is closer to the finish
+    for (int i = 1; i < cars.size(); i++) {
+        //Calculate distance to the finish
+        double dist = cars[i].getDistanceTo(end);
 
-        //If all cars are inactive or time is up, find which one is closer to the finish
-        for (int i = 1; i < cars.size(); i++) {
-            //Calculate distance to the finish
-            double dist = cars[i].getDistanceTo(end);
+        //If the distance is shorter than the shortest recorded thus far, save it
+        if (dist < saveShortest) {
+            saveShortest = dist;
 
-            //If the distance is shorter than the shortest recorded thus far, save it
-            if (dist < saveShortest) {
-                saveShortest = dist;
-
-                //Set a new parent
-                parentIndex = i;
-            }
+            //Set a new parent
+            mostFitCar = i;
         }
     }
+}
 
-    if (parentIndex != -1) {
-        Car parent = cars[parentIndex];
-        for (int i = 0; i < cars.size(); i++) {
-            cars[i] = parent;
+void CarSim::mutateCars()
+{
+    Car parent = cars[mostFitCar];
+    for (int i = 0; i < cars.size(); i++) {
+        cars[i] = parent;
 
-            //Don't mutate parent
-            if (i > 0) {
-                //Each generation the mutation threshold lowers
-                double threshold = 1 * pow(0.75, generation);
+        // Don't mutate parent
+        if (i > 0) {
+            // Each generation the mutation threshold lowers
+            double threshold = 1 * pow(0.75, generation);
 
-                //Threshold limit
-                if (threshold < 0.001) {
-                    threshold = 0.001;
-                }
-
-                //Mutate generationally only a certain proportion of the cars, the rest undergo more severe mutation
-                if (i < (int)(cars.size() * 0.95)) {
-                    cars[i].mutate(threshold);
-                }
-                else {
-                    cars[i].mutate(1);
-                }
+            // Threshold limit
+            if (threshold < 0.001) {
+                threshold = 0.001;
             }
 
-            cars[i].reset(startPoint);
-            startTimer = std::chrono::steady_clock::now();
+            // Mutate generationally only a certain proportion of the cars, the rest undergo more severe mutation
+            if (i < (int)(cars.size() * 0.95)) {
+                cars[i].mutate(threshold);
+            }
+            else {
+                cars[i].mutate(1);
+            }
         }
 
-        generation++;
+        cars[i].reset(startPoint);
+        startTimer = std::chrono::steady_clock::now();
+    }
+
+    generation++;
+}
+
+/**
+ * All simulation logic
+ */
+void CarSim::logic(sf::RenderWindow &window)
+{
+    // Index of the winning car to be the parent. Set to -1 to indicate no winner
+    mostFitCar = -1;
+
+    // Count the time passed since the generation started
+    auto finishTimer = std::chrono::steady_clock::now();
+    auto numberTimer = std::chrono::duration_cast<std::chrono::milliseconds> (finishTimer - startTimer);
+    auto duration = numberTimer.count();
+
+    // Move all the cars and check if anyone made it to the finish
+    moveCars(window);
+
+    // 10 second limit for the generation
+    if (duration > 10000)
+    {
+        findClosest();
+    }
+
+    // If a winner was found, advance to the next generation
+    if (mostFitCar != -1)
+    {
+        mutateCars();
     }
 }
 

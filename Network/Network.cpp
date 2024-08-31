@@ -1,6 +1,3 @@
-/**
- * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
-*/
 #include "Network.h"
 #define e 2.7182818284590452353602874713527
 
