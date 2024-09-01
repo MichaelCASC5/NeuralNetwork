@@ -1,6 +1,6 @@
 #include "CarSim.h"
 
-CarSim::CarSim()
+CarSim::CarSim() : obstacles(400, std::vector<bool>(400, false))
 {
     /**
      * INITIAL GAME LOGIC
@@ -17,6 +17,9 @@ CarSim::CarSim()
 
     // Start timer
     startTimer = std::chrono::steady_clock::now();
+
+    // Initialize mostFit
+    mostFitCar = -1;
 }
 
 CarSim::~CarSim() {}
@@ -30,7 +33,7 @@ void CarSim::moveCars(sf::RenderWindow& window)
 {
     //Iterate through all the cars in the vector and move them all
     for (int i = 0; i < cars.size(); i++) {
-        cars[i].move(obs, window);
+        cars[i].move(obstacles, window);
 
         //Check to see if a car made it to the exit
         if (cars[i].getDistanceTo(end) < 20) {
@@ -44,6 +47,9 @@ void CarSim::moveCars(sf::RenderWindow& window)
 void CarSim::findClosest()
 {
     double saveShortest = cars[0].getDistanceTo(end);
+
+    // The most fit car from the last generation will be at index 0
+    // So seach for better cars after index 0
     mostFitCar = 0;
 
     //If all cars are inactive or time is up, find which one is closer to the finish
@@ -130,7 +136,7 @@ void CarSim::paint(sf::RenderWindow& window)
     // Draw obstacles
     for (int i = 0; i < 20; i++) {
         for (int j = 0; j < 20; j++) {
-            if (obs[i][j]) {
+            if (obstacles[i][j]) {
                 // Set the diameter of the circle
                 sf::CircleShape shape(10.f);
 
@@ -169,7 +175,10 @@ void CarSim::mouseEvents(sf::RenderWindow& window)
         //cursor.setPosition(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 
         //Creating obstacle
-        Point obstacle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y));
-        obs[static_cast<int>(mousePos.x) / 20][static_cast<int>(mousePos.y) / 20] = 1;
+        //Point obstacle(static_cast<int>(mousePos.x), static_cast<int>(mousePos.y));
+        if (static_cast<int>(mousePos.x) / 20 < obstacles.size() && static_cast<int>(mousePos.y) / 20 < obstacles[0].size())
+        {
+            obstacles[static_cast<int>(mousePos.x) / 20][static_cast<int>(mousePos.y) / 20] = 1;
+        }
     }
 }

@@ -67,11 +67,11 @@ public:
     */
     void addXPos(double x_pos_add);
     void addYPos(double y_pos_add);
-    void move(bool obstacles[20][20], sf::RenderTarget& window);
+    void move(std::vector<std::vector<bool>>& obstacles, sf::RenderTarget& window);
     void mutate(double threshold);
     double getDistanceTo(int point[]) const;
-    bool checkObstacle(int radarX, int radarY, bool obstacles[20][20]);
-    double radar(double angle, bool obstacles[20][20], sf::RenderTarget& window);
+    bool checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& obstacles);
+    double radar(double angle, std::vector<std::vector<bool>>& obstacles, sf::RenderTarget& window);
     void reset(int point[]);
 
     /**

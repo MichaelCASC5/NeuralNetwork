@@ -117,7 +117,7 @@ void Car::addYPos(double y_pos_add) {
     y_pos_ += y_pos_add;
 }
 
-void Car::move(bool obstacles[20][20], sf::RenderTarget& window) {
+void Car::move(std::vector<std::vector<bool>> &obstacles, sf::RenderTarget& window) {
     double radar1 = radar(0, obstacles, window);
     double radar2 = radar(-60, obstacles, window);
     double radar3 = radar(-30, obstacles, window);
@@ -164,33 +164,30 @@ double Car::getDistanceTo(int point[]) const {
     return sqrt(pow(point[0] - x_pos_, 2) + pow(point[1] - y_pos_, 2));
 }
 
-bool Car::checkObstacle(int radarX, int radarY, bool obstacles[20][20]) {
+bool Car::checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& obstacles) {
     bool output = false;
-    // for (int i = 0; i < obstacles.size(); i++) {
-    //     double dist = sqrt(pow(radarX - obstacles[i].getXPos(), 2) + pow(radarY - obstacles[i].getYPos(), 2));
-    //     if(dist <= 10) {
-    //         output = true;
-    //         break;
-    //     }
-    // }
 
-    if (obstacles[radarX / 20][radarY / 20]) {
-        // double dist = sqrt(pow(radarX - obstacles[i].getXPos(), 2) + pow(radarY - obstacles[i].getYPos(), 2));
-        // if(dist <= 10) {
-        output = true;
-        // break;
-    // }
+    int radarPosX = radarX / 20;
+    int radarPosY = radarY / 20;
+
+    if (radarPosX >= 0 && radarPosX < obstacles.size() && radarPosY >= 0 && radarPosY < obstacles[0].size())
+    {
+        if (obstacles[radarPosX][radarPosY])
+        {
+            output = true;
+        }
     }
-
 
     //Border obstacles
-    if (radarX < 10 || radarX > 390 || radarY < 10 || radarY > 390) {
+    if (radarX < 10 || radarX > 390 || radarY < 10 || radarY > 390)
+    {
         output = true;
     }
+
     return output;
 }
 
-double Car::radar(double radarAngle, bool obstacles[20][20], sf::RenderTarget& window) {
+double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles, sf::RenderTarget& window) {
     double length = 0;
     double radarX = x_pos_;
     double radarY = y_pos_;

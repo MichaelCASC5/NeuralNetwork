@@ -70,8 +70,8 @@ private:
 
     // Simulation Objects
     std::vector<Car> cars;
-    std::vector<Point> obstacles;
-    bool obs[20][20] = {};
+    std::vector<std::vector<bool>> obstacles;
+    //bool obs[20][20] = {};
     int startPoint[2] = { 50, 50 };
     int end[2] = { 390, 390 };
 
