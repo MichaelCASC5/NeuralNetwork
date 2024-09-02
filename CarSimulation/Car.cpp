@@ -1,6 +1,3 @@
-/**
- * Created by Michael Calle, Allison Lee, Angus Hu on December 27, 2023
-*/
 
 #define PI 3.1415926535897932384626433832795
 
@@ -11,19 +8,21 @@
 */
 
 // Default constructor
-Car::Car() :x_pos_(0), y_pos_(0), angle_(0), velocity_(0), active_(1) {
+Car::Car() :x_pos_(0), y_pos_(0), angle_(0), velocity_(0), active_(1), mWidth_(400), mHeight_(400) {
     Network network;
     network_ = network;
 }
 
 // Parameterized constructor
-Car::Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network) {
+Car::Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network, int mWidth, int mHeight) {
     x_pos_ = x_pos;
     y_pos_ = y_pos;
     angle_ = angle;
     velocity_ = velocity;
     active_ = active;
     network_ = network;
+    mWidth_ = mWidth;
+    mHeight_ = mHeight;
 }
 
 // Copy constructor
@@ -34,6 +33,8 @@ Car::Car(const Car& other) {
     velocity_ = other.velocity_;
     active_ = other.active_;
     network_ = other.network_;
+    mWidth_ = other.mWidth_;
+    mHeight_ = other.mHeight_;
 }
 
 // Copy Assignment operator
@@ -44,6 +45,9 @@ Car& Car::operator=(const Car& other) {
     velocity_ = other.velocity_;
     active_ = other.active_;
     network_ = other.network_;
+    mWidth_ = other.mWidth_;
+    mHeight_ = other.mHeight_;
+
     return *this;
 }
 
@@ -117,12 +121,15 @@ void Car::addYPos(double y_pos_add) {
     y_pos_ += y_pos_add;
 }
 
-void Car::move(std::vector<std::vector<bool>> &obstacles, sf::RenderTarget& window) {
-    double radar1 = radar(0, obstacles, window);
-    double radar2 = radar(-60, obstacles, window);
-    double radar3 = radar(-30, obstacles, window);
-    double radar4 = radar(30, obstacles, window);
-    double radar5 = radar(60, obstacles, window);
+void Car::move(std::vector<std::vector<bool>> &obstacles) {
+    // Clear display radar
+    displayRadar.clear();
+
+    double radar1 = radar(0, obstacles);
+    double radar2 = radar(-60, obstacles);
+    double radar3 = radar(-30, obstacles);
+    double radar4 = radar(30, obstacles);
+    double radar5 = radar(60, obstacles);
     // std::cout << radar1 << std::endl;
 
     if (active_) {
@@ -179,7 +186,7 @@ bool Car::checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& 
     }
 
     //Border obstacles
-    if (radarX < 10 || radarX > 390 || radarY < 10 || radarY > 390)
+    if (radarX < 10 || radarX > mWidth_ - 10 || radarY < 10 || radarY > mHeight_ - 10)
     {
         output = true;
     }
@@ -187,10 +194,13 @@ bool Car::checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& 
     return output;
 }
 
-double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles, sf::RenderTarget& window) {
+double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles) {
     double length = 0;
     double radarX = x_pos_;
     double radarY = y_pos_;
+
+    // Push the first radar point into display radar
+    displayRadar.push_back(Vertex(radarX, radarY));
 
     while (!checkObstacle(radarX, radarY, obstacles) && length < 100) {
         length += 10;
@@ -198,31 +208,18 @@ double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles, 
         radarX = (int)(x_pos_ + cos((PI / 180) * (radarAngle + angle_)) * length);
         radarY = (int)(y_pos_ + sin((PI / 180) * (radarAngle + angle_)) * length);
 
-        /**
-            * Draw radar for testing purposes
-        */
-        if (0) {
-            //Set the diameter of the circle
-            sf::CircleShape shape(1.f);
-
-            //Set the color of the circle
-            shape.setFillColor(sf::Color::White);
-
-            //Set the position of the circle
-            sf::Vector2f position = { (float)radarX, (float)radarY };
-            shape.setPosition(position);
-
-            //Draw the circle to the target window
-            window.draw(shape);
-        }
+        // Pushing the information into the displayRadar vector so the user can see the radar
+        //Vertex radarPoint(radarX, radarY);
+        displayRadar.push_back(Vertex(radarX, radarY));
     }
 
     //If the car has collided with the obstacle, set active to false
-    if (length < 10 || x_pos_ < 10 || x_pos_ > 390 || y_pos_ < 10 || y_pos_ > 390) {
+    if (length < 10 || x_pos_ < 10 || x_pos_ > mWidth_ - 10 || y_pos_ < 10 || y_pos_ > mHeight_ - 10) {
         active_ = 0;
         // angle_ += 180;
         // velocity_ *= -1;
     }
+
     return length;
 }
 
@@ -250,19 +247,24 @@ void Car::printCar() const {
     * Draw Functions
 */
 void Car::draw(sf::RenderTarget& window) const {
-    //Set the diameter of the circle
+    for (int i = 0; i < displayRadar.size(); i++)
+    {
+        displayRadar[i].draw(window);
+    }
+
+    //Set the diameter of the rectangle
     sf::RectangleShape shape(sf::Vector2f(20.f, 10.f));
 
-    //Set the color of the circle
+    //Set the color of the rectangle
     shape.setFillColor(sf::Color::Blue);
 
-    //Set the position of the circle
-    sf::Vector2f position = { (float)x_pos_, (float)y_pos_ };
+    //Set the position of the rectangle
+    sf::Vector2f position = { (float)x_pos_, (float)y_pos_};
     shape.setPosition(position);
 
     //Rotate
     shape.rotate((float)angle_);
 
-    //Draw the circle to the target window
+    //Draw the rectangle to the target window
     window.draw(shape);
 }

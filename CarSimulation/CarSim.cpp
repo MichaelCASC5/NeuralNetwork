@@ -8,10 +8,10 @@ CarSim::CarSim(int width, int height) : obstacles(width / 20, std::vector<bool>(
      /*
       * SETUP SIMULATION
       */
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 2; i++)
     {
         Network network = { 5, 6, 4 };
-        Car car(startPoint[0], startPoint[1], 45, 0, 1, network);
+        Car car(startPoint[0], startPoint[1], 45, 0, 1, network, width, height);
 
         cars.push_back(car);
     }
@@ -30,12 +30,12 @@ CarSim::~CarSim() {}
  *
  * This also checks if a car made it to the exit. Window is only passed for radar debug
  */
-void CarSim::moveCars(sf::RenderWindow& window)
+void CarSim::moveCars()
 {
     //Iterate through all the cars in the vector and move them all
     for (int i = 0; i < cars.size(); i++)
     {
-        cars[i].move(obstacles, window);
+        cars[i].move(obstacles);
 
         //Check to see if a car made it to the exit
         if (cars[i].getDistanceTo(end) < 20)
@@ -112,7 +112,7 @@ void CarSim::mutateCars()
 /**
  * All simulation logic
  */
-void CarSim::logic(sf::RenderWindow& window)
+void CarSim::logic()
 {
     // Index of the winning car to be the parent. Set to -1 to indicate no winner
     mostFitCar = -1;
@@ -123,10 +123,10 @@ void CarSim::logic(sf::RenderWindow& window)
     auto duration = numberTimer.count();
 
     // Move all the cars and check if anyone made it to the finish
-    moveCars(window);
+    moveCars();
 
     // 10 second limit for the generation
-    if (duration > 10000)
+    if (duration > 30000)
     {
         findClosest();
     }

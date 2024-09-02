@@ -39,7 +39,7 @@ Driver::~Driver()
  */
 void Driver::logic()
 {
-    carSim.logic(window);
+    carSim.logic();
 }
 
 /**

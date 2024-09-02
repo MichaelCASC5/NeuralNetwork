@@ -7,7 +7,7 @@
 #define CAR_HPP
 
 #include "Network.h"
-// #include "Point.h"
+#include "Vertex.h"
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
@@ -21,6 +21,12 @@ private:
     bool active_;
 
     Network network_;
+
+    int mWidth_;
+    int mHeight_;
+
+    std::vector<Vertex> displayRadar;
+
 public:
     /**
         * Big 5 Methods
@@ -30,7 +36,7 @@ public:
     Car();
 
     // Parameterized constructor
-    Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network);
+    Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network, int mWidth, int mHeight);
 
     // Copy constructor
     Car(const Car& another_car);
@@ -67,11 +73,11 @@ public:
     */
     void addXPos(double x_pos_add);
     void addYPos(double y_pos_add);
-    void move(std::vector<std::vector<bool>>& obstacles, sf::RenderTarget& window);
+    void move(std::vector<std::vector<bool>>& obstacles);
     void mutate(double threshold);
     double getDistanceTo(int point[]) const;
     bool checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& obstacles);
-    double radar(double angle, std::vector<std::vector<bool>>& obstacles, sf::RenderTarget& window);
+    double radar(double angle, std::vector<std::vector<bool>>& obstacles);
     void reset(int point[]);
 
     /**

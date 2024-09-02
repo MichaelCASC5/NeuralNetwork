@@ -131,12 +131,12 @@
   <ItemGroup>
     <ClInclude Include="Car.h" />
     <ClInclude Include="CarSim.h" />
-    <ClInclude Include="Point.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Car.cpp" />
     <ClCompile Include="CarSim.cpp" />
-    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.vcxproj">

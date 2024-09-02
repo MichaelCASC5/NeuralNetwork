@@ -6,7 +6,7 @@
 // Classes include
 #include "Network.h"
 #include "Car.h"
-#include "Point.h"
+//#include "Point.h"
 
 // C include
 #include <iostream>
@@ -33,7 +33,7 @@ public:
     /**
      * Move cars
      */
-    void moveCars(sf::RenderWindow& window);
+    void moveCars();
 
     /**
      * Find closests
@@ -46,9 +46,9 @@ public:
     void mutateCars();
 
     /**
-     * Perform game logic (window is passed only for debug purposes)
+     * Perform game logic (displayRadar is passed only for debug purposes)
      */
-    void logic(sf::RenderWindow& window);
+    void logic();
 
     /**
      * Paint to screen
@@ -71,11 +71,10 @@ private:
     // Simulation Objects
     std::vector<Car> cars;
     std::vector<std::vector<bool>> obstacles;
-    //bool obs[20][20] = {};
     int startPoint[2] = { 50, 50 };
-    int end[2] = { 390, 390 };
+    int end[2] = { 790, 790 };
 
-    //Generation counter
+    // Generation counter
     int generation = 0;
     int mostFitCar;
 };
