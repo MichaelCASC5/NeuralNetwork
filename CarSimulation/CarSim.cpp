@@ -1,6 +1,6 @@
 #include "CarSim.h"
 
-CarSim::CarSim() : obstacles(400, std::vector<bool>(400, false))
+CarSim::CarSim(int width, int height) : obstacles(width / 20, std::vector<bool>(height / 20, false))
 {
     /**
      * INITIAL GAME LOGIC
@@ -8,7 +8,8 @@ CarSim::CarSim() : obstacles(400, std::vector<bool>(400, false))
      /*
       * SETUP SIMULATION
       */
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 1000; i++)
+    {
         Network network = { 5, 6, 4 };
         Car car(startPoint[0], startPoint[1], 45, 0, 1, network);
 
@@ -32,11 +33,13 @@ CarSim::~CarSim() {}
 void CarSim::moveCars(sf::RenderWindow& window)
 {
     //Iterate through all the cars in the vector and move them all
-    for (int i = 0; i < cars.size(); i++) {
+    for (int i = 0; i < cars.size(); i++)
+    {
         cars[i].move(obstacles, window);
 
         //Check to see if a car made it to the exit
-        if (cars[i].getDistanceTo(end) < 20) {
+        if (cars[i].getDistanceTo(end) < 20)
+        {
             //Save the index of the car that made it to the exit
             mostFitCar = i;
             break;
@@ -53,12 +56,14 @@ void CarSim::findClosest()
     mostFitCar = 0;
 
     //If all cars are inactive or time is up, find which one is closer to the finish
-    for (int i = 1; i < cars.size(); i++) {
+    for (int i = 1; i < cars.size(); i++)
+    {
         //Calculate distance to the finish
         double dist = cars[i].getDistanceTo(end);
 
         //If the distance is shorter than the shortest recorded thus far, save it
-        if (dist < saveShortest) {
+        if (dist < saveShortest)
+        {
             saveShortest = dist;
 
             //Set a new parent
@@ -70,24 +75,29 @@ void CarSim::findClosest()
 void CarSim::mutateCars()
 {
     Car parent = cars[mostFitCar];
-    for (int i = 0; i < cars.size(); i++) {
+    for (int i = 0; i < cars.size(); i++)
+    {
         cars[i] = parent;
 
         // Don't mutate parent
-        if (i > 0) {
+        if (i > 0)
+        {
             // Each generation the mutation threshold lowers
             double threshold = 1 * pow(0.75, generation);
 
             // Threshold limit
-            if (threshold < 0.001) {
+            if (threshold < 0.001)
+            {
                 threshold = 0.001;
             }
 
             // Mutate generationally only a certain proportion of the cars, the rest undergo more severe mutation
-            if (i < (int)(cars.size() * 0.95)) {
+            if (i < (int)(cars.size() * 0.95))
+            {
                 cars[i].mutate(threshold);
             }
-            else {
+            else
+            {
                 cars[i].mutate(1);
             }
         }
@@ -134,9 +144,12 @@ void CarSim::logic(sf::RenderWindow& window)
 void CarSim::paint(sf::RenderWindow& window)
 {
     // Draw obstacles
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            if (obstacles[i][j]) {
+    for (int i = 0; i < obstacles.size(); i++)
+    {
+        for (int j = 0; j < obstacles[0].size(); j++)
+        {
+            if (obstacles[i][j])
+            {
                 // Set the diameter of the circle
                 sf::CircleShape shape(10.f);
 
@@ -154,7 +167,8 @@ void CarSim::paint(sf::RenderWindow& window)
     }
 
     //Draw each car
-    for (int i = 0; i < cars.size(); i++) {
+    for (int i = 0; i < cars.size(); i++)
+    {
         cars[i].draw(window);
     }
 }
@@ -165,7 +179,8 @@ void CarSim::paint(sf::RenderWindow& window)
 void CarSim::mouseEvents(sf::RenderWindow& window)
 {
     //sf::CircleShape cursor(10.f);
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
         //Set the color of the circle

@@ -7,7 +7,7 @@
  * At the bottom the initial game logic that isn't meant to be looped
  * continuously is placed.
  */
-Driver::Driver() : window(sf::VideoMode(400, 400), "Neural Network", sf::Style::Default), runProgram(true)
+Driver::Driver(int width, int height) : window(sf::VideoMode(width, height), "Neural Network", sf::Style::Default), runProgram(true), carSim(width, height)
 {
     // Enable VSync
     window.setVerticalSyncEnabled(true);

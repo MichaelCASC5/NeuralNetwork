@@ -2,7 +2,7 @@
 
 int main()
 {
-	Driver g;
+	Driver g(800, 800);
 	g.start();
 
 	return 0;

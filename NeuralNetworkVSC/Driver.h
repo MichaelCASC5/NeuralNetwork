@@ -22,7 +22,7 @@ public:
     /**
      * Constructor
      */
-    Driver();
+    Driver(int width, int height);
 
     /**
      * Destructor

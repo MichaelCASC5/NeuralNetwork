@@ -23,7 +23,7 @@ public:
     /**
      * Default Constructor
      */
-    CarSim();
+    CarSim(int width, int height);
 
     /**
      * Destructor
