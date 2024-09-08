@@ -8,13 +8,15 @@
 */
 
 // Default constructor
-Car::Car() :x_pos_(0), y_pos_(0), angle_(0), velocity_(0), active_(1), mWidth_(400), mHeight_(400) {
+Car::Car() :x_pos_(0), y_pos_(0), angle_(0), velocity_(0), active_(1), mWidth_(400), mHeight_(400)
+{
     Network network;
     network_ = network;
 }
 
 // Parameterized constructor
-Car::Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network, int mWidth, int mHeight) {
+Car::Car(double x_pos, double y_pos, double angle, double velocity, bool active, Network network, int mWidth, int mHeight)
+{
     x_pos_ = x_pos;
     y_pos_ = y_pos;
     angle_ = angle;
@@ -26,7 +28,8 @@ Car::Car(double x_pos, double y_pos, double angle, double velocity, bool active,
 }
 
 // Copy constructor
-Car::Car(const Car& other) {
+Car::Car(const Car& other)
+{
     x_pos_ = other.x_pos_;
     y_pos_ = other.y_pos_;
     angle_ = other.angle_;
@@ -38,7 +41,8 @@ Car::Car(const Car& other) {
 }
 
 // Copy Assignment operator
-Car& Car::operator=(const Car& other) {
+Car& Car::operator=(const Car& other)
+{
     x_pos_ = other.x_pos_;
     y_pos_ = other.y_pos_;
     angle_ = other.angle_;
@@ -52,33 +56,40 @@ Car& Car::operator=(const Car& other) {
 }
 
 // Destructor
-Car::~Car() {}
+Car::~Car()
+{}
 
 /**
  * Accessors
 */
 
-double Car::getXPos() const {
+double Car::getXPos() const
+{
     return x_pos_;
 }
 
-double Car::getYPos() const {
+double Car::getYPos() const
+{
     return y_pos_;
 }
 
-double Car::getAngle() const {
+double Car::getAngle() const
+{
     return angle_;
 }
 
-double Car::getVelocity() const {
+double Car::getVelocity() const
+{
     return velocity_;
 }
 
-bool Car::getActive() const {
+bool Car::getActive() const
+{
     return active_;
 }
 
-Network Car::getNetwork() const {
+Network Car::getNetwork() const
+{
     return network_;
 }
 
@@ -86,42 +97,51 @@ Network Car::getNetwork() const {
  * Mutators
 */
 
-void Car::setXPos(double x_pos) {
+void Car::setXPos(double x_pos)
+{
     x_pos_ = x_pos;
 }
 
-void Car::setYPos(double y_pos) {
+void Car::setYPos(double y_pos)
+{
     y_pos_ = y_pos;
 }
 
-void Car::setAngle(double angle) {
+void Car::setAngle(double angle)
+{
     angle_ = angle;
 }
 
-void Car::setVelocity(double velocity) {
+void Car::setVelocity(double velocity)
+{
     velocity_ = velocity;
 }
 
-void Car::setActive(bool active) {
+void Car::setActive(bool active)
+{
     active_ = active;
 }
 
-void Car::setNetwork(Network network) {
+void Car::setNetwork(Network network)
+{
     network_ = network;
 }
 
 /**
     * Car functions
 */
-void Car::addXPos(double x_pos_add) {
+void Car::addXPos(double x_pos_add)
+{
     x_pos_ += x_pos_add;
 }
 
-void Car::addYPos(double y_pos_add) {
+void Car::addYPos(double y_pos_add)
+{
     y_pos_ += y_pos_add;
 }
 
-void Car::move(std::vector<std::vector<bool>> &obstacles) {
+void Car::move(std::vector<std::vector<bool>> &obstacles)
+{
     // Clear display radar
     displayRadar.clear();
 
@@ -132,13 +152,15 @@ void Car::move(std::vector<std::vector<bool>> &obstacles) {
     double radar5 = radar(60, obstacles);
     // std::cout << radar1 << std::endl;
 
-    if (active_) {
+    if (active_)
+    {
         std::vector<double> input = { radar1, radar2, radar3, radar4, radar5 };
         network_.forwardPropagation(input);
         std::vector<double> output = network_.getOutputLayerValues();
 
         // network_.printNetwork();
-        // for (int i = 0; i < output.size(); i++ ) {
+        // for (int i = 0; i < output.size(); i++ )
+        // {
         //     std::cout << output[i] << " ";
         // }
         // std::cout << std::endl;
@@ -150,10 +172,12 @@ void Car::move(std::vector<std::vector<bool>> &obstacles) {
         velocity_ -= output[3];
 
         //Velocity cap
-        if (velocity_ > 10) {
+        if (velocity_ > 10)
+        {
             velocity_ = 1;
         }
-        else if (velocity_ < 0) {
+        else if (velocity_ < 0)
+        {
             velocity_ = 0;
         }
 
@@ -163,15 +187,18 @@ void Car::move(std::vector<std::vector<bool>> &obstacles) {
     }
 }
 
-void Car::mutate(double threshold) {
+void Car::mutate(double threshold)
+{
     network_.mutate(threshold);
 }
 
-double Car::getDistanceTo(int point[]) const {
+double Car::getDistanceTo(int point[]) const
+{
     return sqrt(pow(point[0] - x_pos_, 2) + pow(point[1] - y_pos_, 2));
 }
 
-bool Car::checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& obstacles) {
+bool Car::checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& obstacles)
+{
     bool output = false;
 
     int radarPosX = radarX / 20;
@@ -194,27 +221,35 @@ bool Car::checkObstacle(int radarX, int radarY, std::vector<std::vector<bool>>& 
     return output;
 }
 
-double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles) {
+double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles)
+{
     double length = 0;
     double radarX = x_pos_;
     double radarY = y_pos_;
 
     // Push the first radar point into display radar
-    displayRadar.push_back(Vertex(radarX, radarY));
+    if (false)
+    {
+        displayRadar.push_back(Vertex(radarX, radarY));
+    }
 
-    while (!checkObstacle(radarX, radarY, obstacles) && length < 100) {
-        length += 10;
+    while (!checkObstacle(radarX, radarY, obstacles) && length < 100)
+    {
+        length += 40;
 
         radarX = (int)(x_pos_ + cos((PI / 180) * (radarAngle + angle_)) * length);
         radarY = (int)(y_pos_ + sin((PI / 180) * (radarAngle + angle_)) * length);
 
         // Pushing the information into the displayRadar vector so the user can see the radar
-        //Vertex radarPoint(radarX, radarY);
-        displayRadar.push_back(Vertex(radarX, radarY));
+        if (false)
+        {
+            displayRadar.push_back(Vertex(radarX, radarY));
+        }
     }
 
     //If the car has collided with the obstacle, set active to false
-    if (length < 10 || x_pos_ < 10 || x_pos_ > mWidth_ - 10 || y_pos_ < 10 || y_pos_ > mHeight_ - 10) {
+    if (length < 10 || x_pos_ < 10 || x_pos_ > mWidth_ - 10 || y_pos_ < 10 || y_pos_ > mHeight_ - 10)
+    {
         active_ = 0;
         // angle_ += 180;
         // velocity_ *= -1;
@@ -223,7 +258,8 @@ double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles) 
     return length;
 }
 
-void Car::reset(int point[]) {
+void Car::reset(int point[])
+{
     x_pos_ = point[0];
     y_pos_ = point[1];
     angle_ = 45;
@@ -238,7 +274,8 @@ void Car::reset(int point[]) {
 /**
  * @post: prints values of x and y position, prints entire network
 */
-void Car::printCar() const {
+void Car::printCar() const
+{
     std::cout << "x position: " << x_pos_ << "\ny position: " << y_pos_ << std::endl;
     network_.printNetwork();
 }
@@ -246,7 +283,9 @@ void Car::printCar() const {
 /**
     * Draw Functions
 */
-void Car::draw(sf::RenderTarget& window) const {
+void Car::draw(sf::RenderTarget& window) const
+{
+    // Draw radar
     for (int i = 0; i < displayRadar.size(); i++)
     {
         displayRadar[i].draw(window);

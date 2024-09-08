@@ -8,7 +8,7 @@ CarSim::CarSim(int width, int height) : obstacles(width / 20, std::vector<bool>(
      /*
       * SETUP SIMULATION
       */
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 100; i++)
     {
         Network network = { 5, 6, 4 };
         Car car(startPoint[0], startPoint[1], 45, 0, 1, network, width, height);
@@ -151,7 +151,7 @@ void CarSim::paint(sf::RenderWindow& window)
             if (obstacles[i][j])
             {
                 // Set the diameter of the circle
-                sf::CircleShape shape(10.f);
+                sf::RectangleShape shape(sf::Vector2f(20.f, 20.f));
 
                 // Set the color of the circle
                 shape.setFillColor(sf::Color::Red);

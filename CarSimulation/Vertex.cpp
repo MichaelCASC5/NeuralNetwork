@@ -1,13 +1,15 @@
 #include "Vertex.h"
 
-Vertex::Vertex(int x_pos, int y_pos) {
+Vertex::Vertex(int x_pos, int y_pos)
+{
     x_pos_ = x_pos;
     y_pos_ = y_pos;
 
     value_ = -1;
 }
 
-Vertex::Vertex(int x_pos, int y_pos, int value) {
+Vertex::Vertex(int x_pos, int y_pos, int value)
+{
     x_pos_ = x_pos;
     y_pos_ = y_pos;
     value_ = value;
@@ -54,7 +56,8 @@ void Vertex::setValue(int n)
 /**
     * Draw Functions
 */
-void Vertex::draw(sf::RenderTarget& window) const {
+void Vertex::draw(sf::RenderTarget& window) const
+{
     //Set the diameter of the circle
     sf::RectangleShape shape(sf::Vector2f(1.f, 1.f));
 
