@@ -174,7 +174,7 @@ void Car::move(std::vector<std::vector<bool>> &obstacles)
         //Velocity cap
         if (velocity_ > 10)
         {
-            velocity_ = 1;
+            velocity_ = 10;
         }
         else if (velocity_ < 0)
         {
@@ -233,6 +233,7 @@ double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles)
         displayRadar.push_back(Vertex(radarX, radarY));
     }
 
+    // Extending the radar
     while (!checkObstacle(radarX, radarY, obstacles) && length < 100)
     {
         length += 40;
@@ -247,13 +248,41 @@ double Car::radar(double radarAngle, std::vector<std::vector<bool>>& obstacles)
         }
     }
 
-    //If the car has collided with the obstacle, set active to false
-    if (length < 10 || x_pos_ < 10 || x_pos_ > mWidth_ - 10 || y_pos_ < 10 || y_pos_ > mHeight_ - 10)
+    
+    //If the car has collided with the walls, set active to false
+    if (x_pos_ / 20 >= 0 && x_pos_ / 20 < obstacles.size() && y_pos_ / 20 >= 0 && y_pos_ / 20 < obstacles[0].size())
     {
-        active_ = 0;
-        // angle_ += 180;
-        // velocity_ *= -1;
+        if (obstacles[x_pos_ / 20][y_pos_ / 20] || x_pos_ < 10 || x_pos_ > mWidth_ - 10 || y_pos_ < 10 || y_pos_ > mHeight_ - 10)
+        {
+            //active_ = 0;
+             //angle_ += 180;
+            velocity_ = 0;
+            //angle_ += 1;
+            //if (std::rand() % 2 == 0)
+            //{
+            //    angle_ += 10;
+            //}
+            //else
+            //{
+            //    angle_ -= 10;
+            //}
+
+            /**
+             * Starting point you know (x1, x2), end point is (x1 + l * cos(ang),
+             * y1 + l * sin(ang)) where l is the length and ang is the angle.
+             */
+            x_pos_ = save_x_pos_;
+            y_pos_ = save_y_pos_;
+
+            //x_pos_ = x_pos_ - 20 * cos(angle_ * (PI / 180.0));
+            //y_pos_ = y_pos_ - 20 * sin(angle_ * (PI / 180.0));
+
+            
+        }
     }
+
+    save_x_pos_ = x_pos_;
+    save_y_pos_ = y_pos_;
 
     return length;
 }

@@ -15,6 +15,10 @@ class Car {
 private:
     double x_pos_;
     double y_pos_;
+
+    double save_x_pos_;
+    double save_y_pos_;
+
     double angle_;
     double velocity_;
 

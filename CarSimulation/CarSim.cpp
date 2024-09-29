@@ -134,8 +134,14 @@ void CarSim::logic()
     // If a winner was found, advance to the next generation
     if (mostFitCar != -1)
     {
+        std::cout << "Generation: " << generation;
+        std::cout << " Ticks: " << ticks << std::endl;
+        ticks = 0;
+
         mutateCars();
     }
+
+    ticks++;
 }
 
 /**

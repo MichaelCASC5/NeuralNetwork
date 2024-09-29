@@ -75,7 +75,8 @@ private:
     int end[2] = { 790, 790 };
 
     // Generation counter
-    int generation = 0;
+    int generation = 1;
+    int ticks = 0;
     int mostFitCar;
 };
 
